@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendário Agrícola & Clima PWA</title>
-    <!-- Tailwind CSS para design responsivo -->
+    <title>Calendário Agrícola & Clima Digital</title>
+    <!-- Tailwind CSS para design responsivo via CDN -->
     <script src="https://tailwindcss.com"></script>
-    <!-- Configurações PWA e Mobile -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNhbGVuZMOhcmlvIGRlIFBsYW50aW8gZSBDbGltYSIsCiAgInNob3J0X25hbWUiOiAiUGxhbnRpb0JSIiwKICAic3RhcnRfdXJsIjogIi4vaW5kZXguaHRtbCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiMxNTgwM2QiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIKfQ==">
+    
+    <!-- Manifesto inline seguro e universal para reconhecimento mobile -->
+    <link rel="manifest" href='data:application/json,{"name":"Calendario de Plantio e Clima","short_name":"PlantioBR","start_url":".","display":"standalone","background_color":"%23ffffff","theme_color":"%2315803d","orientation":"portrait"}'>
+    
+    <!-- Meta tags para iOS (Safari) -->
     <meta name="theme-color" content="#15803d">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,7 +26,7 @@
     <!-- Conteúdo Principal -->
     <main class="flex-grow container mx-auto px-4 py-6 space-y-6">
         
-        <!-- Bloco de Previsão do Tempo Real -->
+        <!-- Bloco de Previsão do Tempo Real via Geolocalização -->
         <div id="bloco-clima" class="bg-white rounded-xl shadow-md border border-gray-200 p-6">
             <h2 class="text-lg font-bold text-green-800 mb-3 flex items-center gap-2">
                 🌱 Previsão do Tempo Local
@@ -64,7 +67,7 @@
                     </tr>
                 </thead>
                 <tbody id="tabela-corpo" class="text-sm divide-y divide-gray-100">
-                    <!-- Gerado dinamicamente -->
+                    <!-- Gerado dinamicamente via Script -->
                 </tbody>
             </table>
         </div>
@@ -72,10 +75,10 @@
 
     <!-- Rodapé -->
     <footer class="bg-gray-100 text-center py-4 border-t border-gray-200 text-xs text-gray-500">
-        Disponível Offline • Integração com Geolocalização Local
+        Pronto para Produção • Engenharia Agronômica
     </footer>
 
-    <!-- Lógica Unificada (Dados, Clima e PWA) -->
+    <!-- Lógica de Negócio e APIs -->
     <script>
         // 1. BANCO DE DADOS HORTÍCOLAS DO BRASIL
         const dadosPlantio = [
@@ -93,7 +96,7 @@
             { mes: "Dezembro", cultura: "Abóbora-de-Pescoço e Cará (PANC)", clima: "Norte e Nordeste (Chuvoso/Quente)", tempo: "120 - 150", cuidados: "Garantir espaçamento amplo. Limpeza de plantas daninhas concorrentes." }
         ];
 
-        // Renderização da tabela
+        // Renderização automática da tabela
         const tabelaCorpo = document.getElementById('tabela-corpo');
         dadosPlantio.forEach(item => {
             const linha = document.createElement('tr');
@@ -108,38 +111,38 @@
             tabelaCorpo.appendChild(linha);
         });
 
-        // 2. GEOLOCALIZAÇÃO E PREVISÃO DO TEMPO REAL
+        // 2. SISTEMA DE GEOLOCALIZAÇÃO E CAPTURA DE CLIMA
         function buscarClima() {
             const status = document.getElementById('status-clima');
             const blocoDados = document.getElementById('dados-clima');
 
             if (!navigator.geolocation) {
-                status.textContent = "Geolocalização não é suportada pelo seu navegador.";
+                status.textContent = "Erro: Seu navegador não suporta geolocalização.";
                 return;
             }
 
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                status.textContent = "Coordenadas localizadas! Buscando previsão agrícola...";
+                status.textContent = "Coordenadas detectadas! Carregando dados meteorológicos...";
 
                 try {
-                    // Consulta à API Open-Meteo usando as coordenadas exatas obtidas do usuário
+                    // Consulta direta ao Open-Meteo API sem chave de acesso
                     const url = `https://open-meteo.com{lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain&timezone=auto`;
                     const resposta = await fetch(url);
+                    
+                    if (!resposta.ok) throw new Error("Erro na resposta da API");
+                    
                     const dados = await resposta.json();
 
-                    // Preenche os dados nos cartões dinâmicos
+                    // Preenchimento dos blocos visuais na tela
                     document.getElementById('clima-temp').textContent = `${dados.current.temperature_2m}°C`;
                     document.getElementById('clima-vento').textContent = `${dados.current.wind_speed_10m} km/h`;
                     document.getElementById('clima-umidade').textContent = `${dados.current.relative_humidity_2m}%`;
                     document.getElementById('clima-chuva').textContent = `${dados.current.rain} mm`;
 
+                    // Altera a visibilidade dos blocos
                     status.classList.add('hidden');
                     blocoDados.classList.remove('hidden');
                 } catch (erro) {
-                    status.textContent = "Erro ao conectar com o serviço de meteorologia.";
-                    console.error(erro);
-                }
-            }, (erro) => {
         
