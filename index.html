@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -32,8 +32,6 @@
     overflow-x: hidden;
   }
   h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
-
-  /* Fundo animado com partículas de folhas */
   .bg-scene {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background:
@@ -57,7 +55,6 @@
     90% { opacity: 0.15; }
     100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.2); }
   }
-
   .glass {
     background: rgba(28,43,25,0.7);
     backdrop-filter: blur(16px);
@@ -88,7 +85,13 @@
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(74,222,128,0.1);
   }
-
+  .card-plant.custom::before {
+    background: linear-gradient(90deg, var(--accent2), #fb923c);
+  }
+  .card-plant.custom:hover {
+    border-color: var(--accent2);
+    box-shadow: 0 12px 40px rgba(245,158,11,0.1);
+  }
   .month-btn {
     padding: 10px 16px;
     border-radius: 12px;
@@ -108,9 +111,7 @@
     color: var(--accent);
     box-shadow: 0 0 20px rgba(74,222,128,0.15);
   }
-  .month-btn.current {
-    position: relative;
-  }
+  .month-btn.current { position: relative; }
   .month-btn.current::after {
     content: '';
     position: absolute;
@@ -119,7 +120,6 @@
     background: var(--accent2);
     border-radius: 50%;
   }
-
   .badge {
     display: inline-flex; align-items: center; gap: 4px;
     padding: 4px 10px;
@@ -133,7 +133,7 @@
   .badge-blue { background: rgba(56,189,248,0.15); color: #38bdf8; }
   .badge-red { background: rgba(239,68,68,0.15); color: #ef4444; }
   .badge-soil { background: rgba(139,99,64,0.2); color: #c9956a; }
-
+  .badge-custom { background: rgba(245,158,11,0.2); color: #fbbf24; }
   .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -141,7 +141,6 @@
     padding: 18px;
     text-align: center;
   }
-
   .fertilizer-bar {
     height: 6px;
     border-radius: 3px;
@@ -153,21 +152,21 @@
     border-radius: 3px;
     transition: width 0.8s ease;
   }
-
   .modal-overlay {
     position: fixed; inset: 0; z-index: 100;
     background: rgba(0,0,0,0.7);
     backdrop-filter: blur(8px);
-    display: none; align-items: center; justify-content: center;
-    padding: 20px;
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 30px 20px;
+    overflow-y: auto;
   }
   .modal-overlay.show { display: flex; }
   .modal-content {
     background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 20px;
-    max-width: 560px; width: 100%;
-    max-height: 85vh; overflow-y: auto;
+    max-width: 600px; width: 100%;
+    margin: auto 0;
     padding: 32px;
     animation: modalIn 0.3s ease;
   }
@@ -175,7 +174,6 @@
     from { opacity: 0; transform: scale(0.92) translateY(20px); }
     to { opacity: 1; transform: scale(1) translateY(0); }
   }
-
   .pulse-dot {
     width: 8px; height: 8px;
     background: var(--accent);
@@ -186,7 +184,6 @@
     0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
     50% { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
   }
-
   .loader {
     width: 48px; height: 48px;
     border: 3px solid var(--border);
@@ -195,7 +192,6 @@
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .toast {
     position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
     padding: 14px 28px;
@@ -206,7 +202,6 @@
     pointer-events: none;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
-
   .filter-btn {
     padding: 8px 16px;
     border-radius: 10px;
@@ -225,36 +220,306 @@
     color: var(--accent);
   }
 
+  /* Formulário */
+  .form-group { margin-bottom: 18px; }
+  .form-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--fg);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.1);
+  }
+  .form-select { cursor: pointer; }
+  .form-select option { background: var(--card); color: var(--fg); }
+  .form-textarea { resize: vertical; min-height: 60px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+  /* Checkbox de meses */
+  .mes-checks {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .mes-check {
+    display: flex; align-items: center; justify-content: center;
+    padding: 7px 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .mes-check:hover { border-color: var(--accent); color: var(--fg); }
+  .mes-check.selected {
+    background: rgba(74,222,128,0.18);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* NPK sliders */
+  .npk-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.08);
+    outline: none;
+  }
+  .npk-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  .npk-slider.n-slider::-webkit-slider-thumb { background: var(--info); }
+  .npk-slider.p-slider::-webkit-slider-thumb { background: var(--accent2); }
+  .npk-slider.k-slider::-webkit-slider-thumb { background: var(--accent); }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    color: #000;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,222,128,0.3); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--muted); color: var(--fg); }
+  .btn-danger {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(239,68,68,0.3);
+    background: rgba(239,68,68,0.1);
+    color: var(--danger);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-danger:hover { background: rgba(239,68,68,0.2); border-color: var(--danger); }
+
+  .fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    border: none;
+    background: linear-gradient(135deg, var(--accent2), #f97316);
+    color: #000;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 50;
+    box-shadow: 0 8px 30px rgba(245,158,11,0.4);
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fab:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 12px 40px rgba(245,158,11,0.5); }
+
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
   @media (max-width: 768px) {
     .month-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .month-scroll::-webkit-scrollbar { display: none; }
+    .fab { bottom: 20px; right: 20px; width: 54px; height: 54px; font-size: 1.3rem; border-radius: 16px; }
   }
 </style>
 </head>
 <body>
 
 <div class="bg-scene"></div>
-
-<!-- Partículas de folhas -->
 <div id="leafContainer"></div>
-
-<!-- Toast -->
 <div id="toast" class="toast glass" style="border-color: var(--accent);"></div>
 
-<!-- Modal de detalhe -->
+<!-- Modal de detalhe da planta -->
 <div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-content" id="modalBody"></div>
 </div>
 
-<!-- Conteúdo principal -->
-<div class="relative z-10">
+<!-- Modal de adicionar planta -->
+<div id="addModal" class="modal-overlay" onclick="if(event.target===this)closeAddModal()">
+  <div class="modal-content" style="max-width:640px;">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold" style="color:var(--fg);">
+        <i class="fa-solid fa-plus-circle mr-2" style="color:var(--accent2);"></i>
+        Adicionar Hortalia
+      </h2>
+      <button onclick="closeAddModal()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--card);border:1px solid var(--border);">
+        <i class="fa-solid fa-xmark" style="color:var(--muted);"></i>
+      </button>
+    </div>
 
-  <!-- Cabeçalho -->
+    <form id="addForm" onsubmit="return salvarPlanta(event)">
+      <!-- Nome -->
+      <div class="form-group">
+        <label class="form-label">Nome da hortalica</label>
+        <input class="form-input" id="fNome" required placeholder="Ex: Catalonha">
+      </div>
+
+      <div class="form-row">
+        <!-- Categoria -->
+        <div class="form-group">
+          <label class="form-label">Categoria</label>
+          <select class="form-select" id="fCategoria" required>
+            <option value="folhosas">Folhosas</option>
+            <option value="frutos">Frutos</option>
+            <option value="raizes">Raizes</option>
+            <option value="leguminosas">Leguminosas</option>
+            <option value="condimentos">Condimentos</option>
+            <option value="gramineas">Gramineas</option>
+          </select>
+        </div>
+        <!-- Ciclo -->
+        <div class="form-group">
+          <label class="form-label">Ciclo (dias)</label>
+          <input class="form-input" id="fDias" type="number" min="10" max="365" required placeholder="Ex: 60">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <!-- Sol -->
+        <div class="form-group">
+          <label class="form-label">Luz solar</label>
+          <select class="form-select" id="fSol" required>
+            <option value="sol pleno">Sol pleno</option>
+            <option value="meia-sombra">Meia-sombra</option>
+          </select>
+        </div>
+        <!-- Agua -->
+        <div class="form-group">
+          <label class="form-label">Necessidade de agua</label>
+          <select class="form-select" id="fAgua" required>
+            <option value="alto">Alta</option>
+            <option value="moderado">Moderada</option>
+            <option value="baixo">Baixa</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Meses de plantio -->
+      <div class="form-group">
+        <label class="form-label">Meses de plantio (toque para selecionar)</label>
+        <div class="mes-checks" id="fMeses"></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Espacamento</label>
+          <input class="form-input" id="fEspacamento" placeholder="Ex: 30x30 cm">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Profundidade da semente</label>
+          <input class="form-input" id="fProfundidade" placeholder="Ex: 1 cm">
+        </div>
+      </div>
+
+      <!-- NPK -->
+      <div class="form-group">
+        <label class="form-label">NPK Recomendado (arraste os controles)</label>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold w-6" style="color:var(--info);">N</span>
+            <input type="range" class="npk-slider n-slider" id="fN" min="0" max="30" value="10" oninput="document.getElementById('fNVal').textContent=this.value">
+            <span class="text-sm font-bold w-8 text-right" id="fNVal" style="color:var(--info);">10</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold w-6" style="color:var(--accent2);">P</span>
+            <input type="range" class="npk-slider p-slider" id="fP" min="0" max="30" value="10" oninput="document.getElementById('fPVal').textContent=this.value">
+            <span class="text-sm font-bold w-8 text-right" id="fPVal" style="color:var(--accent2);">10</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold w-6" style="color:var(--accent);">K</span>
+            <input type="range" class="npk-slider k-slider" id="fK" min="0" max="30" value="10" oninput="document.getElementById('fKVal').textContent=this.value">
+            <span class="text-sm font-bold w-8 text-right" id="fKVal" style="color:var(--accent);">10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Adubo quimico</label>
+        <input class="form-input" id="fAduboQuimico" placeholder="Ex: NPK 10-10-10 + farinha de ossos">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Adubo organico</label>
+        <input class="form-input" id="fAduboOrganico" placeholder="Ex: Humus de minhoca (2kg/m2)">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Adubacao em cobertura</label>
+          <input class="form-input" id="fCobertura" placeholder="Ex: Biofertilizante a cada 20 dias">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Frequencia da adubacao</label>
+          <input class="form-input" id="fFrequencia" placeholder="Ex: A cada 20 dias">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Dica de cultivo</label>
+        <textarea class="form-textarea" id="fDica" placeholder="Ex: Colha as folhas externas primeiro..."></textarea>
+      </div>
+
+      <div class="flex gap-3 justify-end mt-6">
+        <button type="button" class="btn-secondary" onclick="closeAddModal()">Cancelar</button>
+        <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i> Salvar Hortalica</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" onclick="openAddModal()" title="Adicionar hortalica" aria-label="Adicionar hortalica">
+  <i class="fa-solid fa-plus"></i>
+</button>
+
+<!-- Conteudo principal -->
+<div class="relative z-10">
   <header class="glass sticky top-0 z-50" style="border-top:none;border-left:none;border-right:none;">
     <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -263,13 +528,13 @@
         </div>
         <div>
           <h1 class="text-lg font-bold leading-tight" style="color:var(--fg);">Cultivo Vivo</h1>
-          <p class="text-xs" style="color:var(--muted);">Calendário inteligente de hortaliças</p>
+          <p class="text-xs" style="color:var(--muted);">Calendario inteligente de hortalicas</p>
         </div>
       </div>
       <div class="flex items-center gap-3">
         <div class="flex items-center gap-2">
           <div class="pulse-dot"></div>
-          <span class="text-xs font-semibold" style="color:var(--accent);" id="liveStatus">Obtendo localização...</span>
+          <span class="text-xs font-semibold hidden sm:inline" style="color:var(--accent);" id="liveStatus">Obtendo localizacao...</span>
         </div>
         <button onclick="refreshData()" class="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110" style="background:var(--card);border:1px solid var(--border);" title="Atualizar dados">
           <i class="fa-solid fa-arrows-rotate text-sm" style="color:var(--muted);"></i>
@@ -278,264 +543,512 @@
     </div>
   </header>
 
-  <!-- Loader -->
   <div id="loader" class="flex flex-col items-center justify-center py-32 gap-4">
     <div class="loader"></div>
-    <p class="text-sm" style="color:var(--muted);">Detectando sua localização e clima...</p>
+    <p class="text-sm" style="color:var(--muted);">Detectando sua localizacao e clima...</p>
   </div>
 
-  <!-- Conteúdo -->
-  <main id="mainContent" class="max-w-7xl mx-auto px-4 pb-20" style="display:none;">
-
-    <!-- Painel climático -->
+  <main id="mainContent" class="max-w-7xl mx-auto px-4 pb-24" style="display:none;">
     <section class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3" id="weatherPanel"></section>
-
-    <!-- Info de zona -->
     <section class="mt-6 glass rounded-2xl p-5 flex flex-wrap items-center gap-4" id="zoneInfo"></section>
 
-    <!-- Seletor de mês -->
     <section class="mt-8">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-bold" style="color:var(--fg);">
           <i class="fa-regular fa-calendar-days mr-2" style="color:var(--accent);"></i>
-          Calendário de Plantio
+          Calendario de Plantio
         </h2>
         <span class="text-xs font-semibold px-3 py-1 rounded-lg" style="background:rgba(245,158,11,0.15);color:var(--accent2);" id="plantCount"></span>
       </div>
       <div class="month-scroll flex gap-2 pb-2" id="monthSelector"></div>
     </section>
 
-    <!-- Filtros -->
     <section class="mt-5 flex flex-wrap gap-2" id="filterBar"></section>
-
-    <!-- Grade de hortaliças -->
     <section class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="plantGrid"></section>
 
-    <!-- Vazio -->
     <div id="emptyState" class="hidden text-center py-20">
       <i class="fa-solid fa-leaf text-4xl mb-4" style="color:var(--border);"></i>
-      <p class="text-lg font-semibold" style="color:var(--muted);">Nenhuma hortaliça encontrada</p>
-      <p class="text-sm mt-1" style="color:var(--border);">Tente outro mês ou filtro</p>
+      <p class="text-lg font-semibold" style="color:var(--muted);">Nenhuma hortalica encontrada</p>
+      <p class="text-sm mt-1" style="color:var(--border);">Tente outro mes, filtro ou adicione uma nova</p>
+      <button onclick="openAddModal()" class="btn-primary mt-4"><i class="fa-solid fa-plus"></i> Adicionar Hortalica</button>
     </div>
 
-    <!-- Dicas do mês -->
     <section class="mt-12 glass rounded-2xl p-6" id="monthTips"></section>
-
   </main>
 </div>
 
 <script>
 // ==========================================
-// BANCO DE DADOS DE HORTALIÇAS
+// DADOS BASE
 // ==========================================
 const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MESES_FULL = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
-// Meses de plantio por zona climática (0-11)
-// ZT = Tropical, ZS = Subtropical, ZTM = Temperado quente, ZTF = Temperado frio
-const HORTALICAS = [
-  {
-    nome: 'Alface',
-    icon: 'fa-leaf',
-    cor: '#4ade80',
-    categoria: 'folhosas',
-    zonas: { ZT: [1,2,3,4,5,6,7,8,9,10,11], ZS: [2,3,4,5,6,7,8,9], ZTM: [3,4,5,6,7,8], ZTF: [4,5,6,7,8,9] },
-    dias: 45,
-    sol: 'meia-sombra',
-    agua: 'alto',
-    adubo: { tipo: 'Composto orgânico + NPK 10-10-10', npk: { n: 10, p: 10, k: 10 }, organico: 'Húmus de minhoca (2kg/m²)', cobertura: 'Foliar com biofertilizante a cada 15 dias', frequencia: 'A cada 20 dias' },
-    dica: 'Colhe as folhas externas primeiro para manter a planta produzindo.',
-    espacamento: '25x25 cm',
-    profundidade: '0,5 cm'
-  },
-  {
-    nome: 'Rúcula',
-    icon: 'fa-leaf',
-    cor: '#22c55e',
-    categoria: 'folhosas',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9,10,11], ZS: [1,2,3,4,5,6,7,8,9,10], ZTM: [2,3,4,5,6,7,8,9], ZTF: [3,4,5,6,7,8,9] },
-    dias: 35,
-    sol: 'meia-sombra',
-    agua: 'moderado',
-    adubo: { tipo: 'Composto + NPK 04-14-08', npk: { n: 4, p: 14, k: 8 }, organico: 'Bokashi (1,5kg/m²)', cobertura: 'Nitrogênio foliar após 15 dias', frequencia: 'A cada 25 dias' },
-    dica: 'Quanto mais calor, mais picante fica. Prefira climas amenos.',
-    espacamento: '20x20 cm',
-    profundidade: '0,5 cm'
-  },
-  {
-    nome: 'Couve',
-    icon: 'fa-leaf',
-    cor: '#16a34a',
-    categoria: 'folhosas',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9,10,11], ZS: [0,1,2,3,4,5,6,7,8,9,10,11], ZTM: [2,3,4,5,6,7,8,9,10], ZTF: [3,4,5,6,7,8,9,10] },
-    dias: 70,
-    sol: 'sol pleno',
-    agua: 'alto',
-    adubo: { tipo: 'Esterco curtido + NPK 10-10-10', npk: { n: 10, p: 10, k: 10 }, organico: 'Esterco bovino curtido (3kg/m²)', cobertura: 'Biofertilizante supermagro a cada 20 dias', frequencia: 'A cada 30 dias' },
-    dica: 'Colhe as folhas de baixo para cima. Dura meses no canteiro.',
-    espacamento: '60x40 cm',
-    profundidade: '1 cm'
-  },
-  {
-    nome: 'Espinafre',
-    icon: 'fa-leaf',
-    cor: '#15803d',
-    categoria: 'folhosas',
-    zonas: { ZT: [3,4,5,6,7,8], ZS: [2,3,4,5,6,7,8,9], ZTM: [2,3,4,5,6,7,8,9], ZTF: [3,4,5,6,7,8,9,10] },
-    dias: 50,
-    sol: 'meia-sombra',
-    agua: 'alto',
-    adubo: { tipo: 'Composto + NPK 04-30-10', npk: { n: 4, p: 30, k: 10 }, organico: 'Húmus de minhoca (2kg/m²)', cobertura: 'Fosfatado natural em cobertura', frequencia: 'A cada 20 dias' },
-    dica: 'Não tolera calor excessivo. Em zonas tropicais, plante no inverno.',
-    espacamento: '20x15 cm',
-    profundidade: '1 cm'
-  },
-  {
-    nome: 'Cebolinha',
-    icon: 'fa-seedling',
-    cor: '#86efac',
-    categoria: 'condimentos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9,10,11], ZS: [0,1,2,3,4,5,6,7,8,9,10,11], ZTM: [1,2,3,4,5,6,7,8,9,10], ZTF: [2,3,4,5,6,7,8,9,10] },
-    dias: 60,
-    sol: 'sol pleno',
-    agua: 'moderado',
-    adubo: { tipo: 'Composto + NPK 10-10-10', npk: { n: 10, p: 10, k: 10 }, organico: 'Compostagem caseira (2kg/m²)', cobertura: 'Nitrogênio a cada 30 dias', frequencia: 'A cada 30 dias' },
-    dica: 'Corte sempre a 3cm do solo. Rebrota várias vezes.',
-    espacamento: '15x15 cm',
-    profundidade: '1 cm'
-  },
-  {
-    nome: 'Salsa',
-    icon: 'fa-seedling',
-    cor: '#a3e635',
-    categoria: 'condimentos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9,10,11], ZS: [0,1,2,3,4,5,6,7,8,9,10,11], ZTM: [1,2,3,4,5,6,7,8,9,10], ZTF: [2,3,4,5,6,7,8,9,10] },
-    dias: 60,
-    sol: 'meia-sombra',
-    agua: 'moderado',
-    adubo: { tipo: 'Húmus + NPK 10-10-10', npk: { n: 10, p: 10, k: 10 }, organico: 'Húmus de minhoca (2kg/m²)', cobertura: 'Biofertilizante a cada 20 dias', frequencia: 'A cada 25 dias' },
-    dica: 'Colha os talhos externos. Evite florescer para prolongar a colheita.',
-    espacamento: '20x20 cm',
-    profundidade: '0,5 cm'
-  },
-  {
-    nome: 'Manjericão',
-    icon: 'fa-seedling',
-    cor: '#84cc16',
-    categoria: 'condimentos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9,10,11], ZS: [8,9,10,11,0,1,2,3], ZTM: [9,10,11,0,1,2], ZTF: [9,10,11,0,1] },
-    dias: 60,
-    sol: 'sol pleno',
-    agua: 'moderado',
-    adubo: { tipo: 'Composto rico em N + NPK 10-10-10', npk: { n: 10, p: 10, k: 10 }, organico: 'Bokashi (1,5kg/m²)', cobertura: 'Nitrogênio foliar para manter folhas verdes', frequencia: 'A cada 20 dias' },
-    dica: 'Pinche as flores assim que aparecerem para mais folhas.',
-    espacamento: '30x30 cm',
-    profundidade: '0,5 cm'
-  },
-  {
-    nome: 'Tomate',
-    icon: 'fa-apple-whole',
-    cor: '#ef4444',
-    categoria: 'frutos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8], ZS: [7,8,9,10,11,0,1,2,3], ZTM: [8,9,10,11,0,1,2], ZTF: [9,10,11,0,1,2] },
-    dias: 90,
-    sol: 'sol pleno',
-    agua: 'alto',
-    adubo: { tipo: 'NPK 04-14-08 no plantio + 08-24-12 em floração', npk: { n: 8, p: 24, k: 12 }, organico: 'Esterco de galinha curtido (2kg/m²) + cinza', cobertura: 'Potássio e cálcio na floração', frequencia: 'A cada 15 dias' },
-    dica: 'Tutores desde o plantio. Retire brotos axilares para melhor produção.',
-    espacamento: '80x60 cm',
-    profundidade: '1 cm'
-  },
-  {
-    nome: 'Pimentão',
-    icon: 'fa-pepper-hot',
-    cor: '#f97316',
-    categoria: 'frutos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8], ZS: [7,8,9,10,11,0,1,2,3], ZTM: [8,9,10,11,0,1,2], ZTF: [9,10,11,0,1] },
-    dias: 100,
-    sol: 'sol pleno',
-    agua: 'alto',
-    adubo: { tipo: 'NPK 04-14-08 + NPK 12-06-12 em frutificação', npk: { n: 12, p: 6, k: 12 }, organico: 'Esterco bovino (3kg/m²) + farinha de ossos', cobertura: 'Potássio na frutificação', frequencia: 'A cada 15 dias' },
-    dica: 'Proteja do vento. Adube com potássio para frutos mais firmes.',
-    espacamento: '70x50 cm',
-    profundidade: '1 cm'
-  },
-  {
-    nome: 'Abobrinha',
-    icon: 'fa-apple-whole',
-    cor: '#eab308',
-    categoria: 'frutos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9], ZS: [8,9,10,11,0,1,2,3,4], ZTM: [9,10,11,0,1,2,3], ZTF: [10,11,0,1,2] },
-    dias: 60,
-    sol: 'sol pleno',
-    agua: 'alto',
-    adubo: { tipo: 'NPK 10-10-10 + composto', npk: { n: 10, p: 10, k: 10 }, organico: 'Composto + esterco (4kg/m²)', cobertura: 'Nitrogênio no início, potássio na frutificação', frequencia: 'A cada 15 dias' },
-    dica: 'Colha jovem (15-20cm) para estimular mais frutos. Espaço generoso!',
-    espacamento: '100x80 cm',
-    profundidade: '2 cm'
-  },
-  {
-    nome: 'Berinjela',
-    icon: 'fa-apple-whole',
-    cor: '#7c3aed',
-    categoria: 'frutos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8], ZS: [8,9,10,11,0,1,2,3], ZTM: [9,10,11,0,1,2], ZTF: null },
-    dias: 100,
-    sol: 'sol pleno',
-    agua: 'alto',
-    adubo: { tipo: 'NPK 04-14-08 + NPK 08-24-12', npk: { n: 8, p: 24, k: 12 }, organico: 'Esterco de galinha (2kg/m²) + cinza de lenha', cobertura: 'Fósforo na floração, potássio na frutificação', frequencia: 'A cada 15 dias' },
-    dica: 'Precisa de calor constante. Tutoramento ajuda na produção.',
-    espacamento: '80x60 cm',
-    profundidade: '1 cm'
-  },
-  {
-    nome: 'Pepino',
-    icon: 'fa-apple-whole',
-    cor: '#a3e635',
-    categoria: 'frutos',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9], ZS: [8,9,10,11,0,1,2,3,4], ZTM: [9,10,11,0,1,2,3], ZTF: [10,11,0,1,2] },
-    dias: 55,
-    sol: 'sol pleno',
-    agua: 'alto',
-    adubo: { tipo: 'NPK 10-10-10 + composto', npk: { n: 10, p: 10, k: 10 }, organico: 'Composto (3kg/m²) + esterco', cobertura: 'Nitrogênio inicial, potássio na frutificação', frequencia: 'A cada 12 dias' },
-    dica: 'Tutorar para frutos retos. Colher antes de amarelar.',
-    espacamento: '80x50 cm',
-    profundidade: '2 cm'
-  },
-  {
-    nome: 'Cenoura',
-    icon: 'fa-carrot',
-    cor: '#f97316',
-    categoria: 'raizes',
-    zonas: { ZT: [2,3,4,5,6,7,8], ZS: [2,3,4,5,6,7,8,9,10], ZTM: [3,4,5,6,7,8,9], ZTF: [3,4,5,6,7,8,9,10] },
-    dias: 80,
-    sol: 'sol pleno',
-    agua: 'moderado',
-    adubo: { tipo: 'NPK 04-14-08 + farinha de ossos', npk: { n: 4, p: 14, k: 8 }, organico: 'Húmus de minhoca (2kg/m²) + farinha de ossos', cobertura: 'Fósforo para raízes developed', frequencia: 'No plantio e 30 dias depois' },
-    dica: 'Solo solto e sem pedras essencial. Não exagerar em nitrogênio (só folha!).',
-    espacamento: '10x5 cm',
-    profundidade: '1 cm'
-  },
-  {
-    nome: 'Beterraba',
-    icon: 'fa-circle',
-    cor: '#dc2626',
-    categoria: 'raizes',
-    zonas: { ZT: [2,3,4,5,6,7,8], ZS: [1,2,3,4,5,6,7,8,9,10], ZTM: [2,3,4,5,6,7,8,9], ZTF: [3,4,5,6,7,8,9,10] },
-    dias: 70,
-    sol: 'sol pleno',
-    agua: 'moderado',
-    adubo: { tipo: 'NPK 04-14-08 + composto', npk: { n: 4, p: 14, k: 8 }, organico: 'Composto (2,5kg/m²) + cinza', cobertura: 'Potássio para raiz desenvolvida', frequencia: 'No plantio + 30 dias' },
-    dica: 'As folhas também são comestíveis! Colha com 5-8cm de diâmetro.',
-    espacamento: '15x10 cm',
-    profundidade: '2 cm'
-  },
-  {
-    nome: 'Rabanete',
-    icon: 'fa-circle',
-    cor: '#f43f5e',
-    categoria: 'raizes',
-    zonas: { ZT: [0,1,2,3,4,5,6,7,8,9,10,11], ZS: [0,1,2,3,4,5,6,7,8,9,10,11], ZTM: [2,3,4,5,6,7,8,9], ZTF: [3,4,5,6,7,8,9] },
-    dias: 30,
-    sol: 'sol pleno',
-    agua: 'moderado',
+const HORTALICAS_BASE = [
+  { nome:'Alface', icon:'fa-leaf', cor:'#4ade80', categoria:'folhosas', zonas:{ZT:[1,2,3,4,5,6,7,8,9,10,11],ZS:[2,3,4,5,6,7,8,9],ZTM:[3,4,5,6,7,8],ZTF:[4,5,6,7,8,9]}, dias:45, sol:'meia-sombra', agua:'alto', adubo:{tipo:'Composto organico + NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Humus de minhoca (2kg/m2)',cobertura:'Foliar com biofertilizante a cada 15 dias',frequencia:'A cada 20 dias'}, dica:'Colhe as folhas externas primeiro para manter a planta produzindo.', espacamento:'25x25 cm', profundidade:'0,5 cm' },
+  { nome:'Rucula', icon:'fa-leaf', cor:'#22c55e', categoria:'folhosas', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[1,2,3,4,5,6,7,8,9,10],ZTM:[2,3,4,5,6,7,8,9],ZTF:[3,4,5,6,7,8,9]}, dias:35, sol:'meia-sombra', agua:'moderado', adubo:{tipo:'Composto + NPK 04-14-08',npk:{n:4,p:14,k:8},organico:'Bokashi (1,5kg/m2)',cobertura:'Nitrogenio foliar apos 15 dias',frequencia:'A cada 25 dias'}, dica:'Quanto mais calor, mais picante fica. Prefira climas amenos.', espacamento:'20x20 cm', profundidade:'0,5 cm' },
+  { nome:'Couve', icon:'fa-leaf', cor:'#16a34a', categoria:'folhosas', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[0,1,2,3,4,5,6,7,8,9,10,11],ZTM:[2,3,4,5,6,7,8,9,10],ZTF:[3,4,5,6,7,8,9,10]}, dias:70, sol:'sol pleno', agua:'alto', adubo:{tipo:'Esterco curtido + NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Esterco bovino curtido (3kg/m2)',cobertura:'Biofertilizante supermagro a cada 20 dias',frequencia:'A cada 30 dias'}, dica:'Colhe as folhas de baixo para cima. Dura meses no canteiro.', espacamento:'60x40 cm', profundidade:'1 cm' },
+  { nome:'Espinafre', icon:'fa-leaf', cor:'#15803d', categoria:'folhosas', zonas:{ZT:[3,4,5,6,7,8],ZS:[2,3,4,5,6,7,8,9],ZTM:[2,3,4,5,6,7,8,9],ZTF:[3,4,5,6,7,8,9,10]}, dias:50, sol:'meia-sombra', agua:'alto', adubo:{tipo:'Composto + NPK 04-30-10',npk:{n:4,p:30,k:10},organico:'Humus de minhoca (2kg/m2)',cobertura:'Fosfatado natural em cobertura',frequencia:'A cada 20 dias'}, dica:'Nao tolera calor excessivo. Em zonas tropicais, plante no inverno.', espacamento:'20x15 cm', profundidade:'1 cm' },
+  { nome:'Cebolinha', icon:'fa-seedling', cor:'#86efac', categoria:'condimentos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[0,1,2,3,4,5,6,7,8,9,10,11],ZTM:[1,2,3,4,5,6,7,8,9,10],ZTF:[2,3,4,5,6,7,8,9,10]}, dias:60, sol:'sol pleno', agua:'moderado', adubo:{tipo:'Composto + NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Compostagem caseira (2kg/m2)',cobertura:'Nitrogenio a cada 30 dias',frequencia:'A cada 30 dias'}, dica:'Corte sempre a 3cm do solo. Rebrota varias vezes.', espacamento:'15x15 cm', profundidade:'1 cm' },
+  { nome:'Salsa', icon:'fa-seedling', cor:'#a3e635', categoria:'condimentos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[0,1,2,3,4,5,6,7,8,9,10,11],ZTM:[1,2,3,4,5,6,7,8,9,10],ZTF:[2,3,4,5,6,7,8,9,10]}, dias:60, sol:'meia-sombra', agua:'moderado', adubo:{tipo:'Humus + NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Humus de minhoca (2kg/m2)',cobertura:'Biofertilizante a cada 20 dias',frequencia:'A cada 25 dias'}, dica:'Colha os talhos externos. Evite florescer para prolongar a colheita.', espacamento:'20x20 cm', profundidade:'0,5 cm' },
+  { nome:'Manjericao', icon:'fa-seedling', cor:'#84cc16', categoria:'condimentos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[8,9,10,11,0,1,2,3],ZTM:[9,10,11,0,1,2],ZTF:[9,10,11,0,1]}, dias:60, sol:'sol pleno', agua:'moderado', adubo:{tipo:'Composto rico em N + NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Bokashi (1,5kg/m2)',cobertura:'Nitrogenio foliar para manter folhas verdes',frequencia:'A cada 20 dias'}, dica:'Pinche as flores assim que aparecerem para mais folhas.', espacamento:'30x30 cm', profundidade:'0,5 cm' },
+  { nome:'Tomate', icon:'fa-apple-whole', cor:'#ef4444', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8],ZS:[7,8,9,10,11,0,1,2,3],ZTM:[8,9,10,11,0,1,2],ZTF:[9,10,11,0,1,2]}, dias:90, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 04-14-08 no plantio + 08-24-12 em floracao',npk:{n:8,p:24,k:12},organico:'Esterco de galinha curtido (2kg/m2) + cinza',cobertura:'Potassio e calcio na floracao',frequencia:'A cada 15 dias'}, dica:'Tutores desde o plantio. Retire brotos axilares para melhor producao.', espacamento:'80x60 cm', profundidade:'1 cm' },
+  { nome:'Pimentao', icon:'fa-pepper-hot', cor:'#f97316', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8],ZS:[7,8,9,10,11,0,1,2,3],ZTM:[8,9,10,11,0,1,2],ZTF:[9,10,11,0,1]}, dias:100, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 04-14-08 + NPK 12-06-12 em frutificacao',npk:{n:12,p:6,k:12},organico:'Esterco bovino (3kg/m2) + farinha de ossos',cobertura:'Potassio na frutificacao',frequencia:'A cada 15 dias'}, dica:'Proteja do vento. Adube com potassio para frutos mais firmes.', espacamento:'70x50 cm', profundidade:'1 cm' },
+  { nome:'Abobrinha', icon:'fa-apple-whole', cor:'#eab308', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9],ZS:[8,9,10,11,0,1,2,3,4],ZTM:[9,10,11,0,1,2,3],ZTF:[10,11,0,1,2]}, dias:60, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 10-10-10 + composto',npk:{n:10,p:10,k:10},organico:'Composto + esterco (4kg/m2)',cobertura:'Nitrogenio no inicio, potassio na frutificacao',frequencia:'A cada 15 dias'}, dica:'Colha jovem (15-20cm) para estimular mais frutos. Espaco generoso!', espacamento:'100x80 cm', profundidade:'2 cm' },
+  { nome:'Berinjela', icon:'fa-apple-whole', cor:'#7c3aed', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8],ZS:[8,9,10,11,0,1,2,3],ZTM:null,ZTF:null}, dias:100, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 04-14-08 + NPK 08-24-12',npk:{n:8,p:24,k:12},organico:'Esterco de galinha (2kg/m2) + cinza de lenha',cobertura:'Fosforo na floracao, potassio na frutificacao',frequencia:'A cada 15 dias'}, dica:'Precisa de calor constante. Tutoramento ajuda na producao.', espacamento:'80x60 cm', profundidade:'1 cm' },
+  { nome:'Pepino', icon:'fa-apple-whole', cor:'#a3e635', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9],ZS:[8,9,10,11,0,1,2,3,4],ZTM:[9,10,11,0,1,2,3],ZTF:[10,11,0,1,2]}, dias:55, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 10-10-10 + composto',npk:{n:10,p:10,k:10},organico:'Composto (3kg/m2) + esterco',cobertura:'Nitrogenio inicial, potassio na frutificacao',frequencia:'A cada 12 dias'}, dica:'Tutorar para frutos retos. Colher antes de amarelar.', espacamento:'80x50 cm', profundidade:'2 cm' },
+  { nome:'Cenoura', icon:'fa-carrot', cor:'#f97316', categoria:'raizes', zonas:{ZT:[2,3,4,5,6,7,8],ZS:[2,3,4,5,6,7,8,9,10],ZTM:[3,4,5,6,7,8,9],ZTF:[3,4,5,6,7,8,9,10]}, dias:80, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 04-14-08 + farinha de ossos',npk:{n:4,p:14,k:8},organico:'Humus de minhoca (2kg/m2) + farinha de ossos',cobertura:'Fosforo para raizes desenvolvidas',frequencia:'No plantio e 30 dias depois'}, dica:'Solo solto e sem pedras essencial. Nao exagerar em nitrogenio!', espacamento:'10x5 cm', profundidade:'1 cm' },
+  { nome:'Beterraba', icon:'fa-circle', cor:'#dc2626', categoria:'raizes', zonas:{ZT:[2,3,4,5,6,7,8],ZS:[1,2,3,4,5,6,7,8,9,10],ZTM:[2,3,4,5,6,7,8,9],ZTF:[3,4,5,6,7,8,9,10]}, dias:70, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 04-14-08 + composto',npk:{n:4,p:14,k:8},organico:'Composto (2,5kg/m2) + cinza',cobertura:'Potassio para raiz desenvolvida',frequencia:'No plantio + 30 dias'}, dica:'As folhas tambem sao comestiveis! Colha com 5-8cm de diametro.', espacamento:'15x10 cm', profundidade:'2 cm' },
+  { nome:'Rabanete', icon:'fa-circle', cor:'#f43f5e', categoria:'raizes', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[0,1,2,3,4,5,6,7,8,9,10,11],ZTM:[2,3,4,5,6,7,8,9],ZTF:[3,4,5,6,7,8,9]}, dias:30, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 04-14-08 leve',npk:{n:4,p:14,k:8},organico:'Composto leve (1,5kg/m2)',cobertura:'Geralmente nao precisa',frequencia:'Somente no plantio'}, dica:'Colheita rapida! Plante a cada 15 dias para colheita continua.', espacamento:'10x5 cm', profundidade:'1 cm' },
+  { nome:'Feijao-vagem', icon:'fa-angles-up', cor:'#65a30d', categoria:'leguminosas', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[8,9,10,11,0,1,2,3,4,5],ZTM:[9,10,11,0,1,2,3,4],ZTF:[10,11,0,1,2,3]}, dias:55, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 04-14-08 leve (leguminosa fixa N)',npk:{n:4,p:14,k:8},organico:'Composto (2kg/m2) + inoculante rizobio',cobertura:'Geralmente nao precisa de N',frequencia:'Somente no plantio'}, dica:'Inocular sementes com rizobio. Tutorar variedades trepadeiras.', espacamento:'50x20 cm', profundidade:'3 cm' },
+  { nome:'Ervilha', icon:'fa-angles-up', cor:'#84cc16', categoria:'leguminosas', zonas:{ZT:[3,4,5,6,7],ZS:[2,3,4,5,6,7,8,9],ZTM:[2,3,4,5,6,7,8,9],ZTF:[3,4,5,6,7,8,9,10]}, dias:70, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 04-14-08 + inoculante',npk:{n:4,p:14,k:8},organico:'Composto (2kg/m2) + inoculante',cobertura:'Fosforo no plantio',frequencia:'Somente no plantio'}, dica:'Gosta de frio. Tutorar com grade ou barbante. Fixa nitrogenio!', espacamento:'40x10 cm', profundidade:'3 cm' },
+  { nome:'Morango', icon:'fa-heart', cor:'#e11d48', categoria:'frutos', zonas:{ZT:[2,3,4,5,6],ZS:[3,4,5,6,7,8,9],ZTM:[4,5,6,7,8,9],ZTF:[5,6,7,8,9]}, dias:90, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 10-10-10 + composto',npk:{n:10,p:10,k:10},organico:'Composto (3kg/m2) + serragem',cobertura:'Potassio na floracao',frequencia:'A cada 20 dias'}, dica:'Mudas, nao sementes. Cobrir com palha para evitar contato do fruto com o solo.', espacamento:'30x30 cm', profundidade:'Muda: coroa na superficie' },
+  { nome:'Milho-verde', icon:'fa-wheat-awn', cor:'#fbbf24', categoria:'gramineas', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9],ZS:[8,9,10,11,0,1,2,3,4],ZTM:[9,10,11,0,1,2,3],ZTF:[10,11,0,1,2]}, dias:80, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 04-14-08 plantio + 20-05-20 cobertura',npk:{n:20,p:5,k:20},organico:'Esterco de galinha (2kg/m2)',cobertura:'Nitrogenio aos 30 e 50 dias',frequencia:'A cada 20 dias'}, dica:'Plantar em blocos (nao fileira unica) para boa polinizacao.', espacamento:'80x30 cm', profundidade:'3 cm' },
+  { nome:'Chicoria', icon:'fa-leaf', cor:'#059669', categoria:'folhosas', zonas:{ZT:[2,3,4,5,6,7,8],ZS:[2,3,4,5,6,7,8,9,10],ZTM:[3,4,5,6,7,8,9],ZTF:[4,5,6,7,8,9,10]}, dias:55, sol:'meia-sombra', agua:'moderado', adubo:{tipo:'Composto + NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Humus (2kg/m2)',cobertura:'Nitrogenio foliar a cada 20 dias',frequencia:'A cada 25 dias'}, dica:'Sabor amargo diminui com blanching (cobrir folhas 10 dias antes de colher).', espacamento:'30x25 cm', profundidade:'0,5 cm' },
+  { nome:'Alho-poro', icon:'fa-seedling', cor:'#a3e635', categoria:'condimentos', zonas:{ZT:[3,4,5,6,7],ZS:[2,3,4,5,6,7,8,9],ZTM:[2,3,4,5,6,7,8,9],ZTF:[3,4,5,6,7,8,9,10]}, dias:120, sol:'sol pleno', agua:'moderado', adubo:{tipo:'Composto + NPK 04-14-08',npk:{n:4,p:14,k:8},organico:'Composto (3kg/m2) + cinza',cobertura:'Nitrogenio nos primeiros 60 dias',frequencia:'A cada 30 dias'}, dica:'Amontoar terra ao redor do caule para branquear o talo.', espacamento:'30x15 cm', profundidade:'1 cm' },
+  { nome:'Quiabo', icon:'fa-angles-up', cor:'#16a34a', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9],ZS:[9,10,11,0,1,2,3,4],ZTM:null,ZTF:null}, dias:60, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 10-10-10 + esterco',npk:{n:10,p:10,k:10},organico:'Esterco bovino (3kg/m2)',cobertura:'Nitrogenio no inicio, potassio na floracao',frequencia:'A cada 20 dias'}, dica:'Colher jovem (8-10cm) antes de ficar fibroso. Planta adora calor!', espacamento:'80x50 cm', profundidade:'2 cm' },
+  { nome:'Jilo', icon:'fa-circle', cor:'#059669', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9],ZS:[9,10,11,0,1,2,3,4],ZTM:null,ZTF:null}, dias:70, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 10-10-10 + composto',npk:{n:10,p:10,k:10},organico:'Esterco de galinha (2kg/m2)',cobertura:'Potassio na floracao',frequencia:'A cada 20 dias'}, dica:'Colher quando verde-brilhante. Amargo e normal — escalde antes de cozinhar.', espacamento:'80x50 cm', profundidade:'1 cm' },
+  { nome:'Hortela', icon:'fa-leaf', cor:'#34d399', categoria:'condimentos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9,10,11],ZS:[0,1,2,3,4,5,6,7,8,9,10,11],ZTM:[0,1,2,3,4,5,6,7,8,9,10,11],ZTF:[0,1,2,3,4,5,6,7,8,9,10,11]}, dias:40, sol:'meia-sombra', agua:'alto', adubo:{tipo:'Composto + NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Composto (2kg/m2)',cobertura:'Nitrogenio a cada 30 dias',frequencia:'A cada 30 dias'}, dica:'Plante em vaso separado — invade tudo! Multiplica por estaca facil.', espacamento:'30x30 cm (vaso ideal)', profundidade:'2 cm' },
+  { nome:'Coentro', icon:'fa-seedling', cor:'#22c55e', categoria:'condimentos', zonas:{ZT:[2,3,4,5,6,7,8,9],ZS:[2,3,4,5,6,7,8,9,10],ZTM:[3,4,5,6,7,8,9],ZTF:[4,5,6,7,8,9]}, dias:35, sol:'sol pleno', agua:'moderado', adubo:{tipo:'Composto leve',npk:{n:6,p:6,k:6},organico:'Humus (1,5kg/m2)',cobertura:'Geralmente nao precisa',frequencia:'Somente no plantio'}, dica:'Flora rapido com calor. Plante a cada 15 dias para suprimento continuo.', espacamento:'20x15 cm', profundidade:'0,5 cm' },
+  { nome:'Repolho', icon:'fa-circle', cor:'#16a34a', categoria:'folhosas', zonas:{ZT:[2,3,4,5,6,7,8],ZS:[2,3,4,5,6,7,8,9,10],ZTM:[3,4,5,6,7,8,9],ZTF:[4,5,6,7,8,9,10]}, dias:90, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 04-14-08 + NPK 10-10-10 cobertura',npk:{n:10,p:14,k:10},organico:'Esterco bovino (4kg/m2) + farinha de ossos',cobertura:'Nitrogenio a cada 20 dias',frequencia:'A cada 20 dias'}, dica:'Exige solo muito rico. Compacta a cabeca melhor com clima ameno.', espacamento:'50x40 cm', profundidade:'1 cm' },
+  { nome:'Brocolis', icon:'fa-tree', cor:'#059669', categoria:'folhosas', zonas:{ZT:[2,3,4,5,6,7],ZS:[2,3,4,5,6,7,8,9],ZTM:[3,4,5,6,7,8,9],ZTF:[4,5,6,7,8,9]}, dias:80, sol:'sol pleno', agua:'alto', adubo:{tipo:'NPK 04-14-08 + NPK 10-10-10 cobertura',npk:{n:10,p:14,k:10},organico:'Composto (3kg/m2) + farinha de ossos',cobertura:'Nitrogenio e boro para cabecas firmes',frequencia:'A cada 15 dias'}, dica:'Apos colher a cabeca principal, brotos laterais continuam produzindo.', espacamento:'50x50 cm', profundidade:'1 cm' },
+  { nome:'Nabo', icon:'fa-circle', cor:'#e2e8f0', categoria:'raizes', zonas:{ZT:[3,4,5,6,7,8],ZS:[2,3,4,5,6,7,8,9,10],ZTM:[3,4,5,6,7,8,9],ZTF:[4,5,6,7,8,9,10]}, dias:45, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 04-14-08',npk:{n:4,p:14,k:8},organico:'Composto (2kg/m2)',cobertura:'Geralmente nao precisa',frequencia:'Somente no plantio'}, dica:'Colher jovem para raizes macias. Folhas tambem sao comestiveis.', espacamento:'15x10 cm', profundidade:'1 cm' },
+  { nome:'Batata-doce', icon:'fa-carrot', cor:'#ea580c', categoria:'raizes', zonas:{ZT:[8,9,10,11,0,1,2,3,4],ZS:[9,10,11,0,1,2,3,4],ZTM:[10,11,0,1,2,3],ZTF:null}, dias:120, sol:'sol pleno', agua:'baixo', adubo:{tipo:'NPK 04-14-08 + cinza',npk:{n:4,p:14,k:8},organico:'Composto (2kg/m2) + cinza de lenha',cobertura:'Potassio aos 60 dias',frequencia:'Plantio + 60 dias'}, dica:'Plantar por ramas (mudas). Nao encharcar. Solo leve e arenoso.', espacamento:'80x30 cm', profundidade:'8 cm' },
+  { nome:'Maxixe', icon:'fa-apple-whole', cor:'#84cc16', categoria:'frutos', zonas:{ZT:[0,1,2,3,4,5,6,7,8,9],ZS:[9,10,11,0,1,2,3,4],ZTM:null,ZTF:null}, dias:50, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 10-10-10',npk:{n:10,p:10,k:10},organico:'Esterco (2kg/m2)',cobertura:'Nitrogenio no inicio',frequencia:'A cada 20 dias'}, dica:'Tutorar como o pepino. Colher jovem para melhor textura.', espacamento:'80x50 cm', profundidade:'2 cm' },
+  { nome:'Mandioquinha', icon:'fa-carrot', cor:'#d97706', categoria:'raizes', zonas:{ZT:[3,4,5,6,7,8,9],ZS:[3,4,5,6,7,8,9,10],ZTM:null,ZTF:null}, dias:180, sol:'sol pleno', agua:'moderado', adubo:{tipo:'NPK 04-14-08 + esterco',npk:{n:4,p:14,k:8},organico:'Esterco bovino curtido (3kg/m2)',cobertura:'Potassio aos 90 dias',frequencia:'Plantio + 90 dias'}, dica:'Solo profundo e bem drenado. Colheita 6 meses apos plantio.', espacamento:'80x40 cm', profundidade:'5 cm' }
+];
+
+const CATEGORIAS = [
+  {id:'todas',label:'Todas',icon:'fa-border-all'},
+  {id:'folhosas',label:'Folhosas',icon:'fa-leaf'},
+  {id:'frutos',label:'Frutos',icon:'fa-apple-whole'},
+  {id:'raizes',label:'Raizes',icon:'fa-carrot'},
+  {id:'leguminosas',label:'Leguminosas',icon:'fa-angles-up'},
+  {id:'condimentos',label:'Condimentos',icon:'fa-seedling'},
+  {id:'gramineas',label:'Gramineas',icon:'fa-wheat-awn'}
+];
+
+const ICONES_CAT = {
+  folhosas:'fa-leaf', frutos:'fa-apple-whole', raizes:'fa-carrot',
+  leguminosas:'fa-angles-up', condimentos:'fa-seedling', gramineas:'fa-wheat-awn'
+};
+const CORES_CAT = {
+  folhosas:'#4ade80', frutos:'#f97316', raizes:'#eab308',
+  leguminosas:'#84cc16', condimentos:'#a3e635', gramineas:'#fbbf24'
+};
+
+// ==========================================
+// ESTADO
+// ==========================================
+let HORTALICAS = [];
+let state = {
+  lat:null, lon:null, zona:null, hemisferio:null,
+  mesAtual: new Date().getMonth(),
+  anoAtual: new Date().getFullYear(),
+  filtro:'todas',
+  clima:{temp:0,umidade:0,vento:0,descricao:'',icon:''},
+  cidade:'',
+  selectedMeses: []
+};
+
+// ==========================================
+// LOCALSTORAGE
+// ==========================================
+function loadCustom() {
+  try {
+    const data = localStorage.getItem('cultivoVivo_custom');
+    return data ? JSON.parse(data) : [];
+  } catch(e) { return []; }
+}
+function saveCustom(list) {
+  try { localStorage.setItem('cultivoVivo_custom', JSON.stringify(list)); } catch(e) {}
+}
+function buildList() {
+  const custom = loadCustom();
+  HORTALICAS = [...HORTALICAS_BASE.map(h => ({...h, _custom:false})), ...custom.map(h => ({...h, _custom:true}))];
+}
+
+// ==========================================
+// PARTÍCULAS
+// ==========================================
+(function createLeaves(){
+  const c = document.getElementById('leafContainer');
+  for(let i=0;i<12;i++){
+    const l = document.createElement('div');
+    l.className='leaf-particle';
+    l.style.left=Math.random()*100+'%';
+    l.style.animationDuration=(8+Math.random()*12)+'s';
+    l.style.animationDelay=(Math.random()*15)+'s';
+    l.style.background=`hsl(${100+Math.random()*40},60%,50%)`;
+    const s=6+Math.random()*6; l.style.width=s+'px'; l.style.height=s+'px';
+    c.appendChild(l);
+  }
+})();
+
+// ==========================================
+// TOAST
+// ==========================================
+function showToast(msg, type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.borderColor=type==='error'?'var(--danger)':'var(--accent)';
+  t.style.color=type==='error'?'var(--danger)':'var(--accent)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ==========================================
+// ZONA CLIMÁTICA
+// ==========================================
+function determinarZona(lat){
+  const a=Math.abs(lat);
+  if(a<15)return'ZT'; if(a<23.5)return'ZS'; if(a<35)return'ZTM'; return'ZTF';
+}
+function zonaLabel(z){return{ZT:'Tropical',ZS:'Subtropical',ZTM:'Temperado Quente',ZTF:'Temperado Frio'}[z]||z;}
+function zonaIcon(z){return{ZT:'fa-sun',ZS:'fa-cloud-sun',ZTM:'fa-cloud',ZTF:'fa-snowflake'}[z]||'fa-question';}
+
+// ==========================================
+// CLIMA (Open-Meteo)
+// ==========================================
+async function fetchClima(lat,lon){
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`);
+    const d=await r.json(); const c=d.current;
+    state.clima={temp:c.temperature_2m,umidity:c.relative_humidity_2m,vento:c.wind_speed_10m,descricao:traduzirTempo(c.weather_code),icon:iconeTempo(c.weather_code)};
+  }catch(e){state.clima={temp:'--',umidade:'--',vento:'--',descricao:'Indisponivel',icon:'fa-question'};}
+}
+function traduzirTempo(c){const m={0:'Ceu limpo',1:'Predominantemente limpo',2:'Parcialmente nublado',3:'Nublado',45:'Nevoeiro',48:'Nevoeiro com geada',51:'Chuvisco leve',53:'Chuvisco moderado',55:'Chuvisco intenso',61:'Chuva leve',63:'Chuva moderada',65:'Chuva forte',71:'Neve leve',73:'Neve moderada',75:'Neve forte',80:'Pancadas leves',81:'Pancadas moderadas',82:'Pancadas fortes',95:'Tempestade',96:'Tempestade com granizo',99:'Tempestade severa'};return m[c]||'Indisponivel';}
+function iconeTempo(c){if(c===0)return'fa-sun';if(c<=2)return'fa-cloud-sun';if(c===3)return'fa-cloud';if(c<=48)return'fa-smog';if(c<=55)return'fa-cloud-rain';if(c<=65)return'fa-cloud-showers-heavy';if(c<=75)return'fa-snowflake';if(c<=82)return'fa-cloud-showers-water';return'fa-bolt';}
+
+// ==========================================
+// GEOCODIFICAÇÃO
+// ==========================================
+async function fetchCidade(lat,lon){
+  try{
+    const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=pt-BR`);
+    const d=await r.json(); const a=d.address;
+    state.cidade=a.city||a.town||a.village||a.municipality||a.county||'Local desconhecido';
+  }catch(e){state.cidade='Local desconhecido';}
+}
+
+// ==========================================
+// RENDERIZAÇÕES
+// ==========================================
+function renderWeather(){
+  const c=state.clima;
+  const ct=c.temp!=='--'?(c.temp>35?'var(--danger)':c.temp>25?'var(--accent2)':c.temp>15?'var(--accent)':'var(--info)'):'var(--fg)';
+  document.getElementById('weatherPanel').innerHTML=`
+    <div class="stat-card"><i class="fa-solid ${c.icon} text-2xl mb-2" style="color:var(--accent2);"></i><p class="text-2xl font-bold" style="color:${ct};">${c.temp!=='--'?c.temp+'°C':'--'}</p><p class="text-xs mt-1" style="color:var(--muted);">${c.descricao}</p></div>
+    <div class="stat-card"><i class="fa-solid fa-droplet text-2xl mb-2" style="color:var(--info);"></i><p class="text-2xl font-bold" style="color:var(--info);">${c.umidade!=='--'?c.umidade+'%':'--'}</p><p class="text-xs mt-1" style="color:var(--muted);">Umidade</p></div>
+    <div class="stat-card"><i class="fa-solid fa-wind text-2xl mb-2" style="color:var(--muted);"></i><p class="text-2xl font-bold" style="color:var(--fg);">${c.vento!=='--'?c.vento+' km/h':'--'}</p><p class="text-xs mt-1" style="color:var(--muted);">Vento</p></div>
+    <div class="stat-card"><i class="fa-solid fa-map-pin text-2xl mb-2" style="color:var(--accent);"></i><p class="text-sm font-bold leading-tight" style="color:var(--fg);">${state.cidade}</p><p class="text-xs mt-1" style="color:var(--muted);">${state.lat.toFixed(2)}°, ${state.lon.toFixed(2)}°</p></div>`;
+}
+
+function renderZone(){
+  const z=state.zona;
+  const n=getPlantasDoMes(state.mesAtual).length;
+  const ok=n>=5;
+  document.getElementById('zoneInfo').innerHTML=`
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(74,222,128,0.12);"><i class="fa-solid ${zonaIcon(z)} text-xl" style="color:var(--accent);"></i></div>
+      <div><p class="text-sm font-bold" style="color:var(--fg);">Zona ${zonaLabel(z)}</p><p class="text-xs" style="color:var(--muted);">Hemisferio ${state.lat>=0?'Norte':'Sul'} · ${MESES_FULL[state.mesAtual]}</p></div>
+    </div>
+    <div class="flex items-center gap-4 ml-auto flex-wrap">
+      <span class="badge ${ok?'badge-green':'badge-amber'}"><i class="fa-solid ${ok?'fa-check-circle':'fa-circle-info'}"></i>${n} hortalica${n!==1?'s':''} para plantar</span>
+      <span class="badge badge-soil"><i class="fa-solid fa-temperature-half"></i>${state.clima.temp!=='--'?(state.clima.temp>30?'Cuidado com calor extremo':state.clima.temp<10?'Risco de geada':'Condicoes adequadas'):'--'}</span>
+    </div>`;
+}
+
+function renderMeses(){
+  const c=document.getElementById('monthSelector'); c.innerHTML='';
+  MESES.forEach((m,i)=>{
+    const b=document.createElement('button');
+    b.className=`month-btn ${i===state.mesAtual?'active':''} ${i===new Date().getMonth()?'current':''}`;
+    b.textContent=m;
+    b.onclick=()=>{state.mesAtual=i;renderMeses();renderPlantas();renderZone();renderTips();};
+    c.appendChild(b);
+  });
+}
+
+function renderFiltros(){
+  const c=document.getElementById('filterBar'); c.innerHTML='';
+  CATEGORIAS.forEach(cat=>{
+    const b=document.createElement('button');
+    b.className=`filter-btn ${state.filtro===cat.id?'active':''}`;
+    b.innerHTML=`<i class="fa-solid ${cat.icon} mr-1"></i>${cat.label}`;
+    b.onclick=()=>{state.filtro=cat.id;renderFiltros();renderPlantas();};
+    c.appendChild(b);
+  });
+}
+
+function getPlantasDoMes(mes){
+  return HORTALICAS.filter(h=>{
+    const m2=h.zonas[state.zona];
+    if(!m2)return false;
+    return m2.includes(mes);
+  }).filter(h=>state.filtro==='todas'||h.categoria===state.filtro);
+}
+
+function solBadge(s){return s==='sol pleno'?'<span class="badge badge-amber"><i class="fa-solid fa-sun"></i>Sol Pleno</span>':'<span class="badge badge-blue"><i class="fa-solid fa-cloud-sun"></i>Meia-sombra</span>';}
+function aguaBadge(a){const m={alto:['badge-blue','Alta'],moderado:['badge-green','Moderada'],baixo:['badge-amber','Baixa']};const[c,l]=m[a]||m.moderado;return`<span class="badge ${c}"><i class="fa-solid fa-droplet"></i>${l}</span>`;}
+
+function renderPlantas(){
+  const plantas=getPlantasDoMes(state.mesAtual);
+  const grid=document.getElementById('plantGrid');
+  const empty=document.getElementById('emptyState');
+  document.getElementById('plantCount').textContent=`${plantas.length} planta${plantas.length!==1?'s':''}`;
+  if(!plantas.length){grid.innerHTML='';empty.classList.remove('hidden');return;}
+  empty.classList.add('hidden');
+  grid.innerHTML=plantas.map((h,idx)=>{
+    const globalIdx=HORTALICAS.indexOf(h);
+    return `<div class="card-plant ${h._custom?'custom':''}" onclick="openModal(${globalIdx})" style="animation:modalIn 0.3s ease ${idx*0.04}s both;">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${h.cor}20;"><i class="fa-solid ${h.icon} text-xl" style="color:${h.cor};"></i></div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="font-bold text-base" style="color:var(--fg);">${h.nome}</h3>
+            ${h._custom?'<span class="badge badge-custom"><i class="fa-solid fa-star"></i>Adicionada</span>':''}
+          </div>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <span class="badge badge-green"><i class="fa-regular fa-clock"></i>${h.dias} dias</span>
+            ${solBadge(h.sol)}
+          </div>
+          <div class="flex flex-wrap gap-2 mt-2">${aguaBadge(h.agua)}<span class="badge badge-soil"><i class="fa-solid fa-flask"></i>Ver adubo</span></div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs flex-shrink-0 mt-1" style="color:var(--border);"></i>
+      </div>
+      <div class="mt-3 pt-3" style="border-top:1px solid var(--border);"><p class="text-xs leading-relaxed" style="color:var(--muted);">${h.dica}</p></div>
+    </div>`;
+  }).join('');
+}
+
+// ==========================================
+// MODAL DE DETALHE
+// ==========================================
+function openModal(idx){
+  const h=HORTALICAS[idx]; if(!h)return;
+  const a=h.adubo; const maxNPK=30;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background:${h.cor}20;"><i class="fa-solid ${h.icon} text-2xl" style="color:${h.cor};"></i></div>
+        <div>
+          <h2 class="text-xl font-bold" style="color:var(--fg);">${h.nome}</h2>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-xs" style="color:var(--muted);">${h.categoria}</span>
+            ${h._custom?'<span class="badge badge-custom"><i class="fa-solid fa-star"></i>Voce adicionou</span>':''}
+          </div>
+        </div>
+      </div>
+      <button onclick="closeModal()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--card);border:1px solid var(--border);"><i class="fa-solid fa-xmark" style="color:var(--muted);"></i></button>
+    </div>
+    <div class="grid grid-cols-2 gap-3 mb-6">
+      <div class="stat-card"><p class="text-xs" style="color:var(--muted);">Ciclo</p><p class="text-lg font-bold" style="color:var(--accent);">${h.dias} dias</p></div>
+      <div class="stat-card"><p class="text-xs" style="color:var(--muted);">Sol</p><p class="text-sm font-bold mt-1" style="color:var(--fg);">${h.sol==='sol pleno'?'Sol Pleno':'Meia-sombra'}</p></div>
+      <div class="stat-card"><p class="text-xs" style="color:var(--muted);">Agua</p><p class="text-sm font-bold mt-1" style="color:var(--fg);">${h.agua.charAt(0).toUpperCase()+h.agua.slice(1)}</p></div>
+      <div class="stat-card"><p class="text-xs" style="color:var(--muted);">Espacamento</p><p class="text-sm font-bold mt-1" style="color:var(--fg);">${h.espacamento||'--'}</p></div>
+    </div>
+    <div class="rounded-xl p-5 mb-5" style="background:var(--card);border:1px solid var(--border);">
+      <h3 class="font-bold mb-3 flex items-center gap-2" style="color:var(--accent2);"><i class="fa-solid fa-flask"></i> Adubacao</h3>
+      <div class="mb-4"><p class="text-xs font-semibold mb-1" style="color:var(--muted);">NPK Recomendado</p><p class="text-sm font-bold" style="color:var(--fg);">${a.tipo||'--'}</p></div>
+      <div class="space-y-3 mb-4">
+        <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--info);">Nitrogenio (N)</span><span style="color:var(--fg);">${a.npk.n}</span></div><div class="fertilizer-bar"><div class="fertilizer-bar-fill" style="width:${(a.npk.n/maxNPK)*100}%;background:var(--info);"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--accent2);">Fosforo (P)</span><span style="color:var(--fg);">${a.npk.p}</span></div><div class="fertilizer-bar"><div class="fertilizer-bar-fill" style="width:${(a.npk.p/maxNPK)*100}%;background:var(--accent2);"></div></div></div>
+        <div><div class="flex justify-between text-xs mb-1"><span style="color:var(--accent);">Potassio (K)</span><span style="color:var(--fg);">${a.npk.k}</span></div><div class="fertilizer-bar"><div class="fertilizer-bar-fill" style="width:${(a.npk.k/maxNPK)*100}%;background:var(--accent);"></div></div></div>
+      </div>
+      <div class="space-y-2">
+        <div class="flex items-start gap-2"><i class="fa-solid fa-leaf text-xs mt-1" style="color:var(--accent);"></i><p class="text-xs" style="color:var(--muted);"><strong style="color:var(--fg);">Organico:</strong> ${a.organico||'--'}</p></div>
+        <div class="flex items-start gap-2"><i class="fa-solid fa-spray-can-sparkles text-xs mt-1" style="color:var(--accent2);"></i><p class="text-xs" style="color:var(--muted);"><strong style="color:var(--fg);">Cobertura:</strong> ${a.cobertura||'--'}</p></div>
+        <div class="flex items-start gap-2"><i class="fa-regular fa-calendar text-xs mt-1" style="color:var(--info);"></i><p class="text-xs" style="color:var(--muted);"><strong style="color:var(--fg);">Frequencia:</strong> ${a.frequencia||'--'}</p></div>
+      </div>
+    </div>
+    <div class="rounded-xl p-5 mb-5" style="background:var(--card);border:1px solid var(--border);">
+      <h3 class="font-bold mb-3 flex items-center gap-2" style="color:var(--accent);"><i class="fa-solid fa-hand-holding-seedling"></i> Plantio</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <div><p class="text-xs" style="color:var(--muted);">Espacamento</p><p class="text-sm font-bold" style="color:var(--fg);">${h.espacamento||'--'}</p></div>
+        <div><p class="text-xs" style="color:var(--muted);">Profundidade</p><p class="text-sm font-bold" style="color:var(--fg);">${h.profundidade||'--'}</p></div>
+      </div>
+    </div>
+    <div class="rounded-xl p-5 mb-5" style="background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.15);">
+      <h3 class="font-bold mb-2 flex items-center gap-2" style="color:var(--accent);"><i class="fa-solid fa-lightbulb"></i> Dica</h3>
+      <p class="text-sm leading-relaxed" style="color:var(--muted);">${h.dica||'Sem dica registrada.'}</p>
+    </div>
+    ${h._custom?`<div class="flex justify-end"><button class="btn-danger" onclick="removerPlanta('${h.nome.replace(/'/g,"\\'")}')"><i class="fa-solid fa-trash-can"></i> Remover hortalica</button></div>`:''}
+  `;
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+
+// ==========================================
+// REMOVER PLANTA CUSTOMIZADA
+// ==========================================
+function removerPlanta(nome){
+  const custom=loadCustom().filter(h=>h.nome!==nome);
+  saveCustom(custom);
+  buildList();
+  closeModal();
+  renderPlantas();
+  renderZone();
+  renderTips();
+  showToast(`"${nome}" removida com sucesso.`);
+}
+
+// ==========================================
+// MODAL DE ADICIONAR
+// ==========================================
+function openAddModal(){
+  state.selectedMeses=[];
+  // Resetar formulário
+  document.getElementById('addForm').reset();
+  document.getElementById('fN').value=10;
+  document.getElementById('fP').value=10;
+  document.getElementById('fK').value=10;
+  document.getElementById('fNVal').textContent='10';
+  document.getElementById('fPVal').textContent='10';
+  document.getElementById('fKVal').textContent='10';
+  // Renderizar checkboxes de mês
+  const mc=document.getElementById('fMeses');
+  mc.innerHTML=MESES.map((m,i)=>`<div class="mes-check" data-mes="${i}" onclick="toggleMes(this,${i})">${m}</div>`).join('');
+  document.getElementById('addModal').classList.add('show');
+}
+function closeAddModal(){document.getElementById('addModal').classList.remove('show');}
+
+function toggleMes(el, idx){
+  if(state.selectedMeses.includes(idx)){
+    state.selectedMeses=state.selectedMeses.filter(m=>m!==idx);
+    el.classList.remove('selected');
+  }else{
+    state.selectedMeses.push(idx);
+    el.classList.add('selected');
+  }
+}
+
+function salvarPlanta(e){
+  e.preventDefault();
+  const nome=document.getElementById('fNome').value.trim();
+  if(!nome){showToast('Informe o nome da hortalica.','error');return false;}
+  if(!state.selectedMeses.length){showToast('Selecione pelo menos 1 mes de plantio.','error');return false;}
+
+  const cat=document.getElementById('fCategoria').value;
+  const nova={
+    nome,
+    icon: ICONES_CAT[cat]||'fa-seedling',
+    cor: CORES_CAT[cat]||'#4ade80',
+    categoria: cat,
+    zonas: {},
+    dias: parseInt(document.getElementById('fDias').value)||60,
+    sol: document.getElementById('fSol').value,
+    agua: document.getElementById('fAgua').value,
+    adubo: {
+      tipo: document.getElementById('fAduboQuimico').value.trim()||'NPK personalizado',
+      npk: {
+        n: parseInt(document.getElementById('fN').value)||0,
+        p: parseInt(document.getElementById('fP').value)||0,
+        k: parseInt(document.getElementById('fK').value)||0
+      },
+      organico: document.getElementById('fAduboOrganico').value.trim()||'Nao informado',
+      cobertura: document.getElementById('fCobertura').value.trim()||'Nao informado',
+      frequencia: document.getElementById('fFrequencia').value.trim()||'Nao informado'
+    },
+    dica: document.getElementById('fDica').value.trim()||'Hortalica adicionada por voce. Ajuste as recomendacoes conforme sua experiencia.',
+    espacamento: document.getElementById('fEspacamento').value.trim()||'--',
+    profundidade: document.getElementById('fProfundidade').value.trim()||'--'
+  };
+
+  // Atribuir meses a todas as zonas
+  ['ZT','ZS','ZTM','ZTF'].forEach(z=>{nova.zonas[z]=[...state.selectedMeses];});
+
+  // Salvar
+  const custom=loadCustom();
+  // Verificar duplicata
+  if(custom.some(h=>h.nome.toLowerCase()===nome.toLowerCase())||HORTALICAS_BASE.some(h=>h.nome.toLowerCase()===nome.toLowerCase())){
+    showToast(`"${nome}" ja existe no calendario.`,'error');
+    return false;
+  }
+  custom.push(nova);
+  saveCustom(custom);
+  buildList();
+
+  closeAddModal();
+  renderPlantas();
+  renderZone();
+  renderTips();
+  showToast(`"${nome}" adicionada ao calendario!`);
+  return false;
+}
+
+// ==========================================
+// DICAS DO MÊS
+// ==========================================
+function renderTips(){
+  const mes=state.mesAtual;
+  const dicasGerais={
+    0:['Prepare os canteiros para o verao','Irrigue nas horas mais frescas do dia','Faca cobertura morta para conservar umidade'],
+    1:['Atenda ao controle de pragas no calor','Adube com mais frequencia as plantas em producao','Revise o sistema de drenagem para chuvas de verao'],
+    2:['Finalize plantios de verao','Inicie mudas em sementeiras para o outono','Monitore doencas fungicas com alta umidade'],
+    3:['Comece a transicao para hortalicas de outono-inverno','Faca rotacao de culturas nos canteiros','Colete sementes de plantas que finalizarao ciclo'],
+    4:['Plantio ideal de folhosas em zonas temperadas','Reduza irrigacao conforme temperatura cai','Incorpore composto nos canteiros para a nova estacao'],
+    5:['Excelente mes para raizes em clima ameno','Protege mudas novas de ventos frios','Aplique biofertilizante para fortalecer plantas'],
+    6:['Inverno: foco em couve, espinafre, alho-poro','Evite irrigacao noturna para prevenir fungos','Bom momento para reparar cercas e estruturas'],
+    7:['Mantenha a producao de folhosas de inverno','Prepare sementeiras para o inicio da primavera','Composte restos de culturas anteriores'],
+    8:['Inicie os primeiros plantios de primavera','Aumente gradativamente a irrigacao','Faca adubacao de base nos novos canteiros'],
+    9:['Primavera em pleno vigor: plante bastante!','Introduza plantas atrativas de polinizadores','Tutorar tomateiros e trepadeiras cedo'],
+    10:['Mes de maior diversidade de plantio','Atencao a pulgoes e lagartas na primavera','Mulching pesado para conservar agua'],
+    11:['Prepare-se para o verao com cobertura morta','Plante leguminosas para adubacao verde','Faca uma limpeza geral na horta']
+  };
+  const dicas=dicasGerais[mes]||['Mantenha a horta sempre observada','Regule a irrigacao conforme o clima'];
+  const plantasMes=getPlantasDoMes(mes);
+  const rapidas=plantasMes.filter(p=>p.dias<=40).slice(0,3);
+
+  document.getElementById('monthTips').innerHTML=`
+    <h2 class="text-lg font-bold mb-4 flex items-center gap-2" style="color:var(--fg);"><i class="fa-solid fa-clipboard-list" style="color:var(--accent2);"></i>Agenda de ${MESES_FULL[mes]}</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <h4 class="text-sm font-bold mb-3" style="color:var(--accent);">Tarefas do mes</h4>
+        <ul class="space-y-2">${dicas.map(d=>`<li class="flex items-start gap-2 text-sm" style="color:var(--muted);"><i class="fa-solid fa-check-circle mt-0.5 flex-shrink-0" style="color:var(--accent);"></i>${d}</li>`).join('')}</ul>
+      </div>
+      <div>
+        <h4 class="text-sm font-bold mb-3" style="color:var(--accent2);">Colheita rapida (ate 40 dias)</h4>
+        ${rapidas.length?`<div class="flex flex-wrap gap-2">${rapidas.map(r=>`<span class="badge badge-green text-sm py-2 px-4"><i class="fa-solid ${r.icon}" style="color:${r.cor};"></i>${r.nome} · ${r.dias}d</span>`).join('')}</div>`:`<p class="text-sm" style="color:var(--muted);">Nenhuma colheita rapida este mes.</p>`}
+        <div class="mt-4 p-3 rounded-lg" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);">
+          <p class="text-xs" style="color:var(--accent2);"><i class="fa-solid fa-info-circle mr-1"></i>${plantasMes.length>=8?'Otimo mes para diversificar!':plantasMes.length>=4?'Mes com boas opcoes. Foque nas recomendadas.':'Mes com poucas opcoes. Aproveite para preparar canteiros.'}</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
+async function init(){
+  buildList();
+  if(!navigator.geolocation){fallbackLocation();return;}
+  navigator.geolocation.getCurrentPosition(
+    async pos=>{state.lat=pos.coords.latitude;state.lon=pos.coords.longitude;await loadData();},
+    ()=>{fallbackLocation();},
+    {enableHighAccuracy:false,timeout:10000}
+  );
+}
+function fallbackLocation(){
+  state.lat=-23.55;state.lon=-46.63;state.cidade='Sao Paulo (localizacao padrao)';
+  loadData().then(()=>showToast('Geolocalizacao negada. Usando localizacao padrao.','error'));
+}
+async function loadData(){
+  state.zona=determinarZona(state.lat);
+  await Promise.all([fetchClima(state.lat,state.lon),fetchCidade(state.lat,state.lon)]);
+  document.getElementById('loader').style.display='none';
+  document.getElementById('mainContent').style.display='block';
+  document.getElementById('liveStatus').textContent=`${state.cidade} · Ao vivo`;
+  renderWeather();renderZone();renderMeses();renderFiltros();renderPlantas();renderTips();
+}
+async function refreshData(){
+  showToast('Atualizando dados climaticos...');
+  await fetchClima(state.lat,state.lon);
+  renderWeather();renderZone();
+  showToast('Dados atualizados!');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeAddModal();}});
+init();
+</script>
+</body>
+</html>
