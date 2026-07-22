@@ -4,83 +4,214 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário Agrícola & Clima Digital</title>
-    <!-- Tailwind CSS para design responsivo via CDN -->
-    <script src="https://tailwindcss.com"></script>
     
-    <!-- Manifesto inline seguro e universal para reconhecimento mobile -->
-    <link rel="manifest" href='data:application/json,{"name":"Calendario de Plantio e Clima","short_name":"PlantioBR","start_url":".","display":"standalone","background_color":"%23ffffff","theme_color":"%2315803d","orientation":"portrait"}'>
-    
-    <!-- Meta tags para iOS (Safari) -->
-    <meta name="theme-color" content="#15803d">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+    <!-- CSS Nativo Embutido para garantir o layout 100% funcional no GitHub -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f9fafb;
+            color: #1f2937;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #15803d;
+            color: #ffffff;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        header p {
+            color: #bbf7d0;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        main {
+            flex-grow: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        
+        /* Bloco do Clima */
+        .bloco-clima {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+        .bloco-clima h2 {
+            font-size: 18px;
+            color: #166534;
+            margin-bottom: 12px;
+        }
+        .status-clima {
+            font-size: 14px;
+            color: #4b5563;
+        }
+        .grid-clima {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 12px;
+        }
+        @media (min-width: 768px) {
+            .grid-clima {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .card-clima {
+            background-color: #f0fdf4;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .card-clima p {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .card-clima span {
+            font-size: 20px;
+            font-weight: 700;
+            color: #15803d;
+        }
+        .hidden {
+            display: none !important;
+        }
 
-    <!-- Cabeçalho -->
-    <header class="bg-green-700 text-white py-6 shadow-md text-center">
-        <h1 class="text-2xl md:text-3xl font-bold tracking-wide">Calendário de Plantio & Clima</h1>
-        <p class="text-green-100 text-sm mt-1">Horticultura Brasileira • Engenharia Agronômica</p>
+        /* Tabela Responsiva */
+        .container-tabela {
+            overflow-x: auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+        thead tr {
+            background-color: #166534;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        th, td {
+            padding: 16px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        th {
+            font-weight: 600;
+        }
+        tbody tr:hover {
+            background-color: #f0fdf4;
+            transition: background-color 0.2s;
+        }
+        .mes-col {
+            font-weight: 700;
+            color: #166534;
+        }
+        .cultura-col {
+            font-weight: 500;
+        }
+        .colheita-col {
+            text-align: center;
+            font-weight: 600;
+            color: #374151;
+        }
+        .cuidados-col {
+            color: #4b5563;
+            max-width: 300px;
+        }
+        footer {
+            background-color: #f3f4f6;
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Calendário de Plantio & Clima</h1>
+        <p>Horticultura Brasileira • Engenharia Agronômica</p>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-grow container mx-auto px-4 py-6 space-y-6">
-        
-        <!-- Bloco de Previsão do Tempo Real via Geolocalização -->
-        <div id="bloco-clima" class="bg-white rounded-xl shadow-md border border-gray-200 p-6">
-            <h2 class="text-lg font-bold text-green-800 mb-3 flex items-center gap-2">
-                🌱 Previsão do Tempo Local
-            </h2>
-            <div id="status-clima" class="text-sm text-gray-600 animate-pulse">
+    <main>
+        <!-- Bloco de Previsão do Tempo Real -->
+        <div class="bloco-clima">
+            <h2>🌱 Previsão do Tempo Local</h2>
+            <div id="status-clima" class="status-clima">
                 Solicitando permissão de localização para buscar as condições em tempo real...
             </div>
-            <div id="dados-clima" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
-                <div class="bg-green-50 p-3 rounded-lg text-center">
-                    <p class="text-xs text-gray-500 uppercase">Temperatura</p>
-                    <p id="clima-temp" class="text-xl font-bold text-green-700">--°C</p>
+            <div id="dados-clima" class="grid-clima hidden">
+                <div class="card-clima">
+                    <p>Temperatura</p>
+                    <span id="clima-temp">--°C</span>
                 </div>
-                <div class="bg-green-50 p-3 rounded-lg text-center">
-                    <p class="text-xs text-gray-500 uppercase">Vento</p>
-                    <p id="clima-vento" class="text-xl font-bold text-green-700">-- km/h</p>
+                <div class="card-clima">
+                    <p>Vento</p>
+                    <span id="clima-vento">-- km/h</span>
                 </div>
-                <div class="bg-green-50 p-3 rounded-lg text-center">
-                    <p class="text-xs text-gray-500 uppercase">Umidade do Ar</p>
-                    <p id="clima-umidade" class="text-xl font-bold text-green-700">--%</p>
+                <div class="card-clima">
+                    <p>Umidade do Ar</p>
+                    <span id="clima-umidade">--%</span>
                 </div>
-                <div class="bg-green-50 p-3 rounded-lg text-center">
-                    <p class="text-xs text-gray-500 uppercase">Chuva (Hoje)</p>
-                    <p id="clima-chuva" class="text-xl font-bold text-green-700">-- mm</p>
+                <div class="card-clima">
+                    <p>Chuva (Hoje)</p>
+                    <span id="clima-chuva">-- mm</span>
                 </div>
             </div>
         </div>
 
         <!-- Tabela do Calendário Anual -->
-        <div class="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
-            <table class="w-full text-left border-collapse">
+        <div class="container-tabela">
+            <table>
                 <thead>
-                    <tr class="bg-green-800 text-white text-sm uppercase tracking-wider">
-                        <th class="p-4 font-semibold border-b border-green-900">Mês</th>
-                        <th class="p-4 font-semibold border-b border-green-900">O que Plantar</th>
-                        <th class="p-4 font-semibold border-b border-green-900">Clima / Região Ideal</th>
-                        <th class="p-4 font-semibold border-b border-green-900 text-center">Colheita (Dias)</th>
-                        <th class="p-4 font-semibold border-b border-green-900">Cuidados Principais</th>
+                    <tr>
+                        <th>Mês</th>
+                        <th>O que Plantar</th>
+                        <th>Clima / Região Ideal</th>
+                        <th style="text-align: center;">Colheita (Dias)</th>
+                        <th>Cuidados Principais</th>
                     </tr>
                 </thead>
-                <tbody id="tabela-corpo" class="text-sm divide-y divide-gray-100">
+                <tbody id="tabela-corpo">
                     <!-- Gerado dinamicamente via Script -->
                 </tbody>
             </table>
         </div>
     </main>
 
-    <!-- Rodapé -->
-    <footer class="bg-gray-100 text-center py-4 border-t border-gray-200 text-xs text-gray-500">
-        Pronto para Produção • Engenharia Agronômica
+    <footer>
+        Pronto para Produção • Engenharia Agronômica • Funciona no GitHub Pages
     </footer>
 
-    <!-- Lógica de Negócio e APIs -->
     <script>
-        // 1. BANCO DE DADOS HORTÍCOLAS DO BRASIL
         const dadosPlantio = [
             { mes: "Janeiro", cultura: "Quiabo, Maxixe e Alface de Verão (Crespa Tropical)", clima: "Norte, Nordeste e Centro-Oeste (Quente)", tempo: "60 - 90", cuidados: "Irrigação diária, mulching para umidade e sombrite 30%." },
             { mes: "Fevereiro", cultura: "Abóbora (Menina/Cabotiá) e Feijão de Vagem", clima: "Sudeste e Centro-Oeste (Transição)", tempo: "90 - 120", cuidados: "Monitorar umidade do solo e proteger contra fungos de época chuvosa." },
@@ -96,22 +227,19 @@
             { mes: "Dezembro", cultura: "Abóbora-de-Pescoço e Cará (PANC)", clima: "Norte e Nordeste (Chuvoso/Quente)", tempo: "120 - 150", cuidados: "Garantir espaçamento amplo. Limpeza de plantas daninhas concorrentes." }
         ];
 
-        // Renderização automática da tabela
         const tabelaCorpo = document.getElementById('tabela-corpo');
         dadosPlantio.forEach(item => {
             const linha = document.createElement('tr');
-            linha.className = "hover:bg-green-50 transition-colors";
             linha.innerHTML = `
-                <td class="p-4 font-bold text-green-800 border-b border-gray-100">${item.mes}</td>
-                <td class="p-4 font-medium border-b border-gray-100">${item.cultura}</td>
-                <td class="p-4 text-gray-600 border-b border-gray-100">${item.clima}</td>
-                <td class="p-4 text-center text-gray-700 font-semibold border-b border-gray-100">${item.tempo}</td>
-                <td class="p-4 text-gray-600 text-xs md:text-sm border-b border-gray-100">${item.cuidados}</td>
+                <td class="mes-col">${item.mes}</td>
+                <td class="cultura-col">${item.cultura}</td>
+                <td>${item.clima}</td>
+                <td class="colheita-col">${item.tempo}</td>
+                <td class="cuidados-col">${item.cuidados}</td>
             `;
             tabelaCorpo.appendChild(linha);
         });
 
-        // 2. SISTEMA DE GEOLOCALIZAÇÃO E CAPTURA DE CLIMA
         function buscarClima() {
             const status = document.getElementById('status-clima');
             const blocoDados = document.getElementById('dados-clima');
@@ -126,23 +254,4 @@
                 const lon = position.coords.longitude;
                 status.textContent = "Coordenadas detectadas! Carregando dados meteorológicos...";
 
-                try {
-                    // Consulta direta ao Open-Meteo API sem chave de acesso
-                    const url = `https://open-meteo.com{lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain&timezone=auto`;
-                    const resposta = await fetch(url);
-                    
-                    if (!resposta.ok) throw new Error("Erro na resposta da API");
-                    
-                    const dados = await resposta.json();
-
-                    // Preenchimento dos blocos visuais na tela
-                    document.getElementById('clima-temp').textContent = `${dados.current.temperature_2m}°C`;
-                    document.getElementById('clima-vento').textContent = `${dados.current.wind_speed_10m} km/h`;
-                    document.getElementById('clima-umidade').textContent = `${dados.current.relative_humidity_2m}%`;
-                    document.getElementById('clima-chuva').textContent = `${dados.current.rain} mm`;
-
-                    // Altera a visibilidade dos blocos
-                    status.classList.add('hidden');
-                    blocoDados.classList.remove('hidden');
-                } catch (erro) {
         
