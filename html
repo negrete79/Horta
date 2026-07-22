@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Meu Ano de Plantio</title>
+    
+    <!-- Meta tags PWA -->
+    <meta name="theme-color" content="#1b4332">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWV1IEFubyBkZSBQbGFudGlvIiwic2hvcnRfbmFtZSI6IlBsYW50aW8iLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzFiNDMzMiIsInRoZW1lX2NvbG9yIjoiIzFiNDMzMiJ9">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATpJREFUWEft1rFqwkAUBdDvJgYTkHEDPgAj8AAPEJmAFG5AaOQCX4AL4AJeQEx2JMK5HKX8SRl2yTfvzuSWbLJL8/0+f9Sxz0UOYRIwRogTRxrOHxj2y6hTgDDmjRgDDmjRgDDmjRgDDmjRgDDmjRoMb1wLzE8z8P+X6DpT1H2C+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUUQ8YY0aMMWIEGWI0aMKECVMG+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUcwUYY0aMMWIEGWI0aMKECVMG+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUcwUYY0aMMWIEGWI0aMKECVMG+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUcwUYY8Z3cQId1PbzhMbvAAAAABJRU5ErkJggg==">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATpJREFUWEft1rFqwkAUBdDvJgYTkHEDPgAj8AAPEJmAFG5AaOQCX4AL4AJeQEx2JMK5HKX8SRl2yTfvzuSWbLJL8/0+f9Sxz0UOYRIwRogTRxrOHxj2y6hTgDDmjRgDDmjRgDDmjRgDDmjRgDDmjRoMb1wLzE8z8P+X6DpT1H2C+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUUQ8YY0aMMWIEGWI0aMKECVMG+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUcwUYY0aMMWIEGWI0aMKECVMG+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUcwUYY0aMMWIEGWI0aMKECVMG+o+xtQfY/0dYr6D5F1B9j+j7G1B9j/R1ivokUcwUYY8Z3cQId1PbzhMbvAAAAABJRU5ErkJggg==">
+
+    <style>
+        :root {
+            --bg: #f0f4eb;
+            --bg-card: #ffffff;
+            --primary: #2d6a4f;
+            --primary-light: #52b788;
+            --primary-dark: #1b4332;
+            --accent: #d4a373;
+            --text-main: #2b2d26;
+            --text-light: #6b705c;
+            --danger: #d62828;
+            --border: #e0e5dd;
+            --shadow: 0 4px 20px rgba(45, 106, 79, 0.08);
+            --shadow-hover: 0 8px 30px rgba(45, 106, 79, 0.15);
+            --radius: 20px;
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Adicionado scroll-behavior suave global */
+        html { scroll-behavior: smooth; } 
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            padding-top: calc(24px + var(--safe-area-top));
+            padding-bottom: calc(80px + var(--safe-area-bottom)); /* Espaço extra embaixo pro botão não cobrir nada */
+        }
+
+        header { text-align: center; margin-bottom: 32px; }
+        header h1 { font-size: 2rem; color: var(--primary-dark); margin-bottom: 6px; letter-spacing: -0.5px; }
+        header p { color: var(--text-light); font-size: 1rem; }
+
+        .weather-card {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+            color: #fff; border-radius: var(--radius); padding: 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 36px; box-shadow: var(--shadow-hover);
+        }
+        .weather-info { flex: 1; }
+        .weather-location { font-size: 0.9rem; opacity: 0.85; margin-bottom: 6px; }
+        .weather-status { font-size: 1.3rem; font-weight: 600; }
+        .weather-temp-block { text-align: right; }
+        .weather-icon { font-size: 3rem; display: block; margin-bottom: 4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .weather-temp { font-size: 2.5rem; font-weight: 700; }
+        .weather-error {
+            background: #fff3cd; color: #856404; padding: 16px; border-radius: var(--radius);
+            margin-bottom: 32px; text-align: center; font-size: 0.9rem; border: 1px solid #ffc107; display: none;
+        }
+
+        .form-section {
+            background: var(--bg-card); padding: 28px 24px; border-radius: var(--radius);
+            box-shadow: var(--shadow); margin-bottom: 40px; border: 1px solid var(--border);
+        }
+        .form-section h2 { font-size: 1.3rem; color: var(--primary-dark); margin-bottom: 24px; }
+        
+        .input-group { margin-bottom: 24px; }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group input {
+            width: 100%; padding: 16px; border: 2px solid var(--border); border-radius: 12px;
+            font-size: 1rem; font-family: inherit; background: #fafcf8; transition: all 0.2s;
+        }
+        .input-group input:focus { outline: none; border-color: var(--primary-light); background: #fff; box-shadow: 0 0 0 4px rgba(82, 183, 136, 0.15); }
+
+        .type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
+        .type-option {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 16px 8px; border: 2px solid var(--border); border-radius: 16px;
+            cursor: pointer; transition: all 0.25s ease; background: #fafcf8; user-select: none;
+        }
+        .type-option:hover { border-color: var(--primary-light); transform: translateY(-2px); box-shadow: var(--shadow); }
+        .type-option.selected { border-color: var(--primary); background: #e8f5e9; box-shadow: 0 4px 12px rgba(45, 106, 79, 0.15); }
+        .type-option span.icon { font-size: 2rem; margin-bottom: 6px; display: block; }
+        .type-option span.label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); text-align: center; }
+        #p-type { position: absolute; width: 0; height: 0; opacity: 0; }
+
+        .btn-submit {
+            width: 100%; padding: 18px; border: none; border-radius: 14px; font-size: 1.1rem;
+            font-weight: 700; cursor: pointer; background: var(--primary); color: #fff;
+            transition: all 0.2s; margin-top: 8px; letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
+        }
+        .btn-submit:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45, 106, 79, 0.4); }
+        .btn-submit:active { transform: translateY(0); }
+
+        .garden-section h2 { font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        .garden-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        
+        .plant-card {
+            background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow);
+            border: 1px solid var(--border); overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column;
+        }
+        .plant-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .card-top {
+            padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
+        }
+        .card-title { font-size: 1.2rem; font-weight: 700; color: var(--primary-dark); }
+        .card-badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; }
+        .badge-hortalica { background: #40916c; }
+        .badge-frutifera { background: #e76f51; }
+        .badge-ornamental { background: #f4a261; }
+        .badge-erva { background: #2a9d8f; }
+        .badge-pancs { background: #606c38; }
+
+        .card-content { padding: 24px; flex-grow: 1; }
+        .plant-date-info { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
+        .care-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .stat-box { background: var(--bg); padding: 16px; border-radius: 14px; text-align: center; }
+        .stat-label { display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 600; margin-bottom: 6px; }
+        .stat-value { display: block; font-size: 0.95rem; color: var(--primary); font-weight: 700; min-height: 1.2em; transition: color 0.3s; }
+
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn-care {
+            padding: 14px; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-care:active { transform: scale(0.96); }
+        .btn-water { background: #e1f5fe; color: #0277bd; }
+        .btn-water:hover { background: #b3e5fc; }
+        .btn-fert { background: #fff3e0; color: #e65100; }
+        .btn-fert:hover { background: #ffe0b2; }
+
+        .card-bottom { padding: 16px 24px; border-top: 1px solid var(--border); }
+        .btn-delete {
+            width: 100%; padding: 12px; background: transparent; border: 2px solid #ffcccc;
+            color: var(--danger); border-radius: 12px; font-size: 0.85rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; font-family: inherit;
+        }
+        .btn-delete:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); grid-column: 1 / -1; }
+        .empty-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.4; display: block; }
+
+        /* === BOTÃO FLUTUANTE VOLTAR AO TOPO === */
+        .btn-scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-dark);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 999;
+            /* Margem de segurança para iPhones com "Safe Area" */
+            margin-bottom: var(--safe-area-bottom); 
+        }
+        .btn-scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .btn-scroll-top:hover {
+            background: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        @media (min-width: 600px) {
+            .garden-grid { grid-template-columns: repeat(2, 1fr); }
+            .type-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+        @media (min-width: 900px) {
+            .garden-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🌱 Meu Ano de Plantio</h1>
+            <p>Gerencie suas mudas, cuidados e clima em tempo real.</p>
+        </header>
+
+        <div id="weather-error" class="weather-error">⚠️ Não foi possível obter sua localização.</div>
+        <div id="weather-card" class="weather-card">
+            <div class="weather-info">
+                <div class="weather-location" id="w-location">Obtendo localização...</div>
+                <div class="weather-status" id="w-status">Verificando clima...</div>
+            </div>
+            <div class="weather-temp-block">
+                <span class="weather-icon" id="w-icon">🌤️</span>
+                <span class="weather-temp" id="w-temp">--°C</span>
+            </div>
+        </div>
+
+        <section class="form-section">
+            <h2>Adicionar Nova Planta</h2>
+            <form id="plant-form">
+                <div class="input-group">
+                    <label for="p-name">Nome da Planta</label>
+                    <input type="text" id="p-name" placeholder="Ex: Ora-pro-nóbis, Bertalha, Tomate..." required>
+                </div>
+                <div class="input-group">
+                    <label>Tipo de Planta</label>
+                    <input type="text" id="p-type" name="p-type" required readonly style="display:none;">
+                    <div class="type-grid">
+                        <div class="type-option" data-value="Hortaliça" onclick="selectType(this)"><span class="icon">🥬</span><span class="label">Hortaliça</span></div>
+                        <div class="type-option" data-value="Frutífera" onclick="selectType(this)"><span class="icon">🍎</span><span class="label">Frutífera</span></div>
+                        <div class="type-option" data-value="Ornamental" onclick="selectType(this)"><span class="icon">🌸</span><span class="label">Ornamental</span></div>
+                        <div class="type-option" data-value="Erva" onclick="selectType(this)"><span class="icon">🌿</span><span class="label">Erva</span></div>
+                        <div class="type-option" data-value="PANCs" onclick="selectType(this)"><span class="icon">🍃</span><span class="label">PANCs</span></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="p-date">Data de Plantio</label>
+                    <input type="date" id="p-date" required>
+                </div>
+                <button type="submit" class="btn-submit">Adicionar ao Jardim</button>
+            </form>
+        </section>
+
+        <section class="garden-section">
+            <h2>🌿 Meu Jardim</h2>
+            <div class="garden-grid" id="garden-grid"></div>
+        </section>
+    </div>
+
+    <!-- BOTÃO FLUTUANTE PARA SUBIR -->
+    <button class="btn-scroll-top" id="btnTop" title="Voltar ao topo">⬆️</button>
+
+    <script>
+        // SERVICE WORKER
+        if ('serviceWorker' in navigator) {
+            const swCode = `self.addEventListener('install', () => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim())); self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`;
+            navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], { type: 'application/javascript' }))).catch(() => {});
+        }
+
+        // LÓGICA DO BOTÃO DE SUBIR
+        const btnTop = document.getElementById('btnTop');
+        
+        // Quando o usuário rola a página (window scroll)
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                btnTop.classList.add('show'); // Adiciona a classe que faz ele aparecer
+            } else {
+                btnTop.classList.remove('show'); // Remove para esconder
+            }
+        });
+
+        // Ao clicar no botão, rola suavemente até o topo (y=0)
+        btnTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // SELETOR VISUAL
+        function selectType(element) {
+            document.querySelectorAll('.type-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('p-type').value = element.dataset.value;
+        }
+
+        // CLIMA
+        const wmoCodes = {
+            0: { d: "Céu Limpo", e: "☀️" }, 1: { d: "Predominantemente Limpo", e: "🌤️" }, 2: { d: "Parcialmente Nublado", e: "⛅" }, 3: { d: "Nublado", e: "☁️" },
+            45: { d: "Nevoeiro", e: "🌫️" }, 48: { d: "Nevoeiro com Geada", e: "🌫️" }, 51: { d: "Garoa Leve", e: "🌦️" }, 53: { d: "Garoa Moderada", e: "🌦️" },
+            55: { d: "Garoa Intensa", e: "🌧️" }, 61: { d: "Chuva Leve", e: "🌧️" }, 63: { d: "Chuva Moderada", e: "🌧️" }, 65: { d: "Chuva Forte", e: "🌧️" },
+            71: { d: "Neve Leve", e: "🌨️" }, 73: { d: "Neve Moderada", e: "🌨️" }, 75: { d: "Neve Forte", e: "❄️" }, 80: { d: "Pancadas Leves", e: "🌦️" },
+            81: { d: "Pancadas Moderadas", e: "🌧️" }, 82: { d: "Pancadas Violentas", e: "⛈️" }, 95: { d: "Tempestade", e: "⛈️" }, 96: { d: "Tempestade com Granizo", e: "⛈️" }, 99: { d: "Tempestade Forte", e: "⛈️" }
+        };
+
+        function initWeather() {
+            if (!navigator.geolocation) return showWeatherError();
+            navigator.geolocation.getCurrentPosition(pos => {
+                fetchLocationName(pos.coords.latitude, pos.coords.longitude);
+                fetchWeatherData(pos.coords.latitude, pos.coords.longitude);
+            }, () => showWeatherError());
+        }
+
+        async function fetchLocationName(lat, lon) {
+            try {
+                const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=pt`);
+                const data = await res.json();
+                document.getElementById('w-location').innerText = `📍 ${data.city || data.locality || 'Sua Localização'} - ${data.principalSubdivision || ''}`;
+            } catch (e) { document.getElementById('w-location').innerText = `📍 Suas Coordenadas`; }
+        }
+
+        async function fetchWeatherData(lat, lon) {
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                const w = wmoCodes[data.current_weather.weathercode] || { d: "Indisponível", e: "🌡️" };
+                document.getElementById('w-status').innerText = w.d;
+                document.getElementById('w-icon').innerText = w.e;
+                document.getElementById('w-temp').innerText = `${data.current_weather.temperature}°C`;
+            } catch (error) { showWeatherError(); }
+        }
+
+        function showWeatherError() {
+            document.getElementById('weather-card').style.display = 'none';
+            document.getElementById('weather-error').style.display = 'block';
+        }
+
+        // GERENCIAMENTO DE PLANTAS
+        let plants = JSON.parse(localStorage.getItem('meuJardim')) || [];
+        const form = document.getElementById('plant-form');
+        const gardenGrid = document.getElementById('garden-grid');
+        document.getElementById('p-date').max = new Date().toISOString().split("T")[0];
+
+        const badgeClasses = { 'Hortaliça': 'badge-hortalica', 'Frutífera': 'badge-frutifera', 'Ornamental': 'badge-ornamental', 'Erva': 'badge-erva', 'PANCs': 'badge-pancs' };
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('p-name').value.trim();
+            const type = document.getElementById('p-type').value;
+            const rawDate = document.getElementById('p-date').value;
+            if (!name || !type || !rawDate) { alert("Preencha todos os campos e selecione o tipo."); return; }
+            plants.push({ id: Date.now().toString(), name, type, plantDate: rawDate, lastWatered: null, lastFertilized: null });
+            saveAndRender();
+            form.reset();
+            document.querySelectorAll('.type-option').forEach(el => el.classList.remove('selected'));
+        });
+
+        function formatDateBR(dateString) { if (!dateString) return "Nunca"; const [year, month, day] = dateString.split('-
